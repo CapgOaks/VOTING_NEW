@@ -1,4 +1,4 @@
-package com.capgemini.voting.model;
+package com.capgemini.security4.entity;
 
 import java.time.LocalDate;
 
