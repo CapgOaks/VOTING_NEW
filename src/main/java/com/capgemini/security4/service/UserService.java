@@ -9,6 +9,12 @@ public interface UserService {
 
 	Users createUser(Users user);
 
+	boolean existsByUserName(String userName);
+
+	boolean existsByUserEmail(String userEmail);
+
+	Users findByUserNameOrUserEmail(String userName, String email);
+	
 	Users findByUserId(Long userId);
 
 	Users updateUser(Long userId, Users user);
