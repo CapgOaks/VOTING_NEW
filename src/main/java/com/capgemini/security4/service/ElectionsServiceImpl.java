@@ -1,6 +1,7 @@
 package com.capgemini.security4.service;
 
 import com.capgemini.security4.entity.Elections;
+
 import com.capgemini.security4.exception.ElectionNotFoundException;
 import com.capgemini.security4.repository.ElectionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class ElectionsServiceImpl implements ElectionsService {
 
     
 
+    
 	@Override
     public Elections getElectionById(Long id) {
         return electionsRepository.findById(id).orElseThrow(()-> new ElectionNotFoundException("Election not Found with id:"+ id));
