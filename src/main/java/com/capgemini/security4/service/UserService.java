@@ -1,14 +1,21 @@
 package com.capgemini.security4.service;
 
+
+import java.util.List;
+
 import com.capgemini.security4.entity.Users;
 
 public interface UserService {
 
 	Users createUser(Users user);
 
-	boolean existsByUserName(String username);
+	Users findByUserId(Long userId);
 
-	boolean existsByUserEmail(String email);
-
-	Users findByUserNameOrUserEmail(String username, String email);
+	Users updateUser(Long userId, Users user);
+	
+	void deleteUser(Long userId);
+	
+	boolean existsByUserId(Long userId);
+	
+	List<Users> getAllUsers();
 }

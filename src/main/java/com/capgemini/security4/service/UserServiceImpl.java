@@ -1,5 +1,7 @@
 package com.capgemini.security4.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,18 +25,37 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean existsByUserName(String username) {
-		return userRepository.existsByUserName(username);
+	public boolean existsByUserId(Long userId) {
+		return userRepository.existsByUserId(userId);
 	}
 
 	@Override
-	public boolean existsByUserEmail(String email) {
-		return userRepository.existsByUserEmail(email);
+	public Users findByUserId(Long userId) {
+		return userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException("UserId not found!"));
 	}
-	
+
 	@Override
-	public Users findByUserNameOrUserEmail(String username, String email) {
-		return userRepository.findByUserNameOrUserEmail(username, email)
-				.orElseThrow(()->new UserNotFoundException("Username or Email not Found !"));
+	public Users updateUser(Long userId, Users user) {
+		Users existing = userRepository.findByUserId(userId)
+				.orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+		existing.setUserName(user.getUserName());
+		existing.setUserEmail(user.getUserEmail());
+		existing.setPasswordHash(user.getPasswordHash());
+		existing.setDob(user.getDob());
+		return userRepository.save(existing);
+
+	}
+
+	@Override
+	public void deleteUser(Long userId) {
+		if (!userRepository.existsByUserId(userId)) {
+			throw new UserNotFoundException("Cannot delete. Job not found with ID: " + userId);
+		}
+		userRepository.deleteById(userId);
+	}
+
+	@Override
+	public List<Users> getAllUsers() {
+		return userRepository.findAll();
 	}
 }
