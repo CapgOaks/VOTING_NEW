@@ -1,33 +1,44 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
+# Eclipse project files
 .project
-.settings
-.springBeans
-.sts4-cache
+.classpath
+.settings/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# Maven target directory
+target/
+
+# IDEs
 *.iml
+.idea/
 *.ipr
+*.iws
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# VS Code settings (optional)
 .vscode/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# Compiled class files
+*.class
+
+# Local environment properties
+.env
+*.local
+application.properties
+
+# Ignore local DB/app config
+src/main/resources/application.properties
+
+# Maven wrapper files (optional, comment out if you use them)
+# mvnw
+# mvnw.cmd
+# .mvn/
