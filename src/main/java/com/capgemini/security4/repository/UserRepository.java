@@ -4,17 +4,17 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.capgemini.security4.entity.User;
+import com.capgemini.security4.entity.Users;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<Users, Long> {
 
-	Optional<User> findByEmail(String email);
+	Optional<Users> findByUserEmail(String email);
 
-	Optional<User> findByUserNameOrEmail(String username, String email);
+	Optional<Users> findByUserNameOrUserEmail(String username, String email);
 
-	Optional<User> findByUserName(String username);
+	Optional<Users> findByUserName(String username);
 
 	boolean existsByUserName(String username);
 
-	boolean existsByEmail(String email);
+	boolean existsByUserEmail(String email);
 }

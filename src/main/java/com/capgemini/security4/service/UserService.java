@@ -1,14 +1,14 @@
 package com.capgemini.security4.service;
 
-import com.capgemini.security4.entity.User;
+import com.capgemini.security4.entity.Users;
 
 public interface UserService {
 
-	User createUser(User user);
+	Users createUser(Users user);
 
 	boolean existsByUserName(String username);
 
-	boolean existsByEmail(String email);
+	boolean existsByUserEmail(String email);
 
-	User findByUserNameOrEmail(String username, String email);
+	Users findByUserNameOrUserEmail(String username, String email);
 }

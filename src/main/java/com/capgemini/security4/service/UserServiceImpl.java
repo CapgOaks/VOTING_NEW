@@ -3,7 +3,7 @@ package com.capgemini.security4.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.capgemini.security4.entity.User;
+import com.capgemini.security4.entity.Users;
 import com.capgemini.security4.exception.UserNotFoundException;
 import com.capgemini.security4.repository.UserRepository;
 
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User createUser(User user) {
+	public Users createUser(Users user) {
 		return userRepository.save(user);
 	}
 
@@ -28,13 +28,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean existsByEmail(String email) {
-		return userRepository.existsByEmail(email);
+	public boolean existsByUserEmail(String email) {
+		return userRepository.existsByUserEmail(email);
 	}
 	
 	@Override
-	public User findByUserNameOrEmail(String username, String email) {
-		return userRepository.findByUserNameOrEmail(username, email)
+	public Users findByUserNameOrUserEmail(String username, String email) {
+		return userRepository.findByUserNameOrUserEmail(username, email)
 				.orElseThrow(()->new UserNotFoundException("Username or Email not Found !"));
 	}
 }

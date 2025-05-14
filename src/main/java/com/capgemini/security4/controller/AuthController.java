@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.security4.dto.LoginDto;
 import com.capgemini.security4.dto.ResponseToken;
-import com.capgemini.security4.entity.User;
+import com.capgemini.security4.entity.Users;
 import com.capgemini.security4.exception.UserAlreadyExistsException;
 import com.capgemini.security4.security.JwtUtils;
 import com.capgemini.security4.service.UserService;
@@ -46,11 +46,11 @@ public class AuthController {
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
 		if (authentication.isAuthenticated()) {
-			User user = userService.findByUserNameOrEmail(loginDto.getUsername(), loginDto.getUsername());
+			Users user = userService.findByUserNameOrUserEmail(loginDto.getUsername(), loginDto.getUsername());
 			Map<String, Object> claims = new HashMap<>();
-			claims.put("email", user.getEmail());
+			claims.put("email", user.getUserEmail());
 			claims.put("userid", user.getUserId());
-			claims.put("usertype", user.getUserType());
+			claims.put("usertype", user.getRole());
 			String token = jwtService.generateToken(loginDto.getUsername(), claims);
 			ResponseToken responseToken = new ResponseToken(token);
 			return ResponseEntity.status(HttpStatus.OK).body(responseToken);
@@ -59,10 +59,10 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<User> registerUser(@RequestBody User user) {
-		if (userService.existsByUserName(user.getUserName()) || userService.existsByEmail(user.getEmail()))
+	public ResponseEntity<Users> registerUser(@RequestBody Users user) {
+		if (userService.existsByUserName(user.getUserName()) || userService.existsByUserEmail(user.getUserEmail()))
 			throw new UserAlreadyExistsException("Username or Email Exists !");
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
 
 		return ResponseEntity.status(HttpStatus.OK).body(userService.createUser(user));
 	}

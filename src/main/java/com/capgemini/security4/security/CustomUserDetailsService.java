@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.capgemini.security4.entity.User;
+import com.capgemini.security4.entity.Users;
 import com.capgemini.security4.repository.UserRepository;
 
 @Service
@@ -29,14 +29,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-		User user = userRepository.findByUserNameOrEmail(usernameOrEmail, usernameOrEmail).orElseThrow(
+		Users user = userRepository.findByUserNameOrUserEmail(usernameOrEmail, usernameOrEmail).orElseThrow(
 				() -> new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail));
 
 		Set<GrantedAuthority> authorities = new HashSet<>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserType()));
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
 
 
-		return new org.springframework.security.core.userdetails.User(usernameOrEmail, user.getPassword(), authorities);
+		return new org.springframework.security.core.userdetails.User(usernameOrEmail, user.getPasswordHash(), authorities);
 	}
 }
 
