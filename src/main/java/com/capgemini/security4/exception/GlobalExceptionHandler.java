@@ -19,8 +19,20 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
 	
+
 	@ExceptionHandler(ElectionNotFoundException.class)
 	public ResponseEntity<String> handleElectionNotFoundException(ElectionNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	}
+
+	@ExceptionHandler(PartyAlreadyExistsException.class)
+	public ResponseEntity<String> handlePartyAlreadyExistsException(PartyAlreadyExistsException ex) {
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	}
+	
+
+	@ExceptionHandler(PartyNotFoundException.class)
+	public ResponseEntity<String> handlePartyAlreadyExistsException(PartyNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
 }
