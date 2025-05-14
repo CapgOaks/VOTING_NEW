@@ -8,13 +8,14 @@ import com.capgemini.security4.entity.Users;
 
 public interface UserRepository extends JpaRepository<Users, Long> {
 
-	Optional<Users> findByUserEmail(String email);
+	Optional<Users> findByUserId(Long userId);
+	
+	boolean existsByUserId(Long userId);
 
-	Optional<Users> findByUserNameOrUserEmail(String username, String email);
+	boolean existsByUserName(String userName);
 
-	Optional<Users> findByUserName(String username);
+	boolean existsByUserEmail(String userEmail);
 
-	boolean existsByUserName(String username);
+	Optional<Users> findByUserNameOrUserEmail(String userName, String email);
 
-	boolean existsByUserEmail(String email);
 }
