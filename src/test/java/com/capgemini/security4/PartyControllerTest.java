@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ByteArrayResource;
@@ -30,17 +31,22 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.capgemini.security4.controller.PartyController;
 import com.capgemini.security4.entity.Party;
+import com.capgemini.security4.security.CustomUserDetailsService;
 import com.capgemini.security4.security.JwtUtils;
 import com.capgemini.security4.service.PartyService;
 
 @WebMvcTest(PartyController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class PartyControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
     
-	@Mock
+	@MockBean
 	private JwtUtils jwtutils;
+	
+	@MockBean
+	private CustomUserDetailsService customUserDetailsService;
 	
 	@MockBean
 	private PartyService partyService;
