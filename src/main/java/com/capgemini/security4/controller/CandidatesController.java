@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.service.CandidatesService;
 
+import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -43,12 +45,12 @@ public class CandidatesController {
 
 	
 	@PostMapping
-	public ResponseEntity<Candidates> createCandidates(@RequestBody Candidates  candidates) {
+	public ResponseEntity<Candidates> createCandidates(@Valid @RequestBody Candidates  candidates) {
 		Candidates saved = candidatesService.createCandidates(candidates);
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 	@PutMapping("/{id}")
-	public ResponseEntity<Candidates> updateCandidates(@PathVariable Long id,@RequestBody Candidates newCandidates) {
+	public ResponseEntity<Candidates> updateCandidates(@PathVariable Long id,@Valid @RequestBody Candidates newCandidates) {
 		return ResponseEntity.status(HttpStatus.OK).body(candidatesService.updateCandidates(id, newCandidates));
 	}
 

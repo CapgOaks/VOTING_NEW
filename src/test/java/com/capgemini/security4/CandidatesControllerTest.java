@@ -135,9 +135,9 @@ class CandidatesControllerTest {
         String requestBody = """
             {
                 "manifesto": "Updated Manifesto",
-                "user": { "userId": 2L },
-                "party": { "partyId": 1L },
-                "election": { "electionId": 2L }
+                "user": { "userId": 2 },
+                "party": { "partyId": 1 },
+                "election": { "electionId": 2 }
             }
             """;
 
