@@ -3,11 +3,15 @@ package com.capgemini.security4.controller;
 import com.capgemini.security4.entity.Votes;
 import com.capgemini.security4.service.VotesService;
 
+import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,12 +37,18 @@ public class VotesController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Votes> castVote(@RequestBody Votes vote) {
-		log.info("Received vote submission: {}", vote);
+  public ResponseEntity<Votes> castVote(@Valid @RequestBody Votes vote, BindingResult bindingResult) {
 
-		Votes savedVote = votesService.castVote(vote);
+    if (bindingResult.hasErrors()) {
+        throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
+    }
 
-		log.info("Vote successfully saved: {}", savedVote);
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedVote);
-	}
+    log.info("Received vote submission: {}", vote);
+
+    Votes savedVote = votesService.castVote(vote);
+
+    log.info("Vote successfully saved: {}", savedVote);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedVote);
+  }
+
 }
