@@ -19,8 +19,11 @@ import com.capgemini.security4.entity.Users;
 import com.capgemini.security4.exception.UserNotFoundException;
 import com.capgemini.security4.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController {
 
 	private final UserService userService;
@@ -33,13 +36,17 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<List<Users>> getAllUsers() {
+		log.info("GET /api/users - Fetching all users");
 		List<Users> users = userService.getAllUsers();
+		log.info("Fetched {} user(s)", users.size());
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
 	@PostMapping
 	public ResponseEntity<Users> createUser(@RequestBody Users user) {
+		log.info("POST /api/users - Creating user: {}", user);
 		Users saved = userService.createUser(user);
+		log.info("User created with ID: {}", saved.getUserId());
 		return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("/api/users/" + saved.getUserId()))
 				.body(saved);
 
@@ -47,13 +54,17 @@ public class UserController {
 
 	@PutMapping("/{userId}")
 	public ResponseEntity<Users> updateUser(@PathVariable Long userId, @RequestBody Users newUser) {
+		log.info("PUT /api/users/{} - Updating user with new data: {}", userId, newUser);
 		Users updated = userService.updateUser(userId, newUser);
+		log.info("User with ID {} updated successfully", userId);
 		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
 
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+		log.info("DELETE /api/users/{} - Deleting user", userId);
 		userService.deleteUser(userId);
+		log.info("User with ID {} deleted", userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
