@@ -1,5 +1,6 @@
 package com.capgemini.security4.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Users createUser(Users user) {
+		user.setCreatedAt(LocalDate.now());
 		return userRepository.save(user);
 	}
 
