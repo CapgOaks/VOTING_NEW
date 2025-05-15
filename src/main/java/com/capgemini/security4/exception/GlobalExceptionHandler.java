@@ -42,4 +42,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleResultNotFoundException(ResultNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
+	@ExceptionHandler(DuplicateVoteException.class) 
+	public ResponseEntity<String> handleDuplicateVote(DuplicateVoteException ex) {
+	    return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	}
+
+	@ExceptionHandler(InvalidVoteException.class)
+	public ResponseEntity<String> handleInvalidVote(InvalidVoteException ex) {
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+	}
 }
