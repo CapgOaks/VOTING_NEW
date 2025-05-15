@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = ElectionsController.class)
-@AutoConfigureMockMvc(addFilters = false) 
+@AutoConfigureMockMvc(addFilters = false)
 @DisplayName("ElectionsController Test Suite")
 class ElectionsControllerTest {
 
@@ -42,8 +42,7 @@ class ElectionsControllerTest {
 
     @MockBean
     private JwtUtils jwtUtils;
- 
-    
+
     @MockBean
     private com.capgemini.security4.security.CustomUserDetailsService customUserDetailsService;
 
@@ -51,14 +50,13 @@ class ElectionsControllerTest {
 
     @BeforeEach
     void setUp() {
-        sampleElection = Elections.builder()
-                .electionId(1L)
-                .title("Election 1")
-                .description("Unit test election")
-                .startDate(LocalDateTime.now())
-                .endDate(LocalDateTime.now().plusDays(1))
-                .electionStatus(true)
-                .build();
+        sampleElection = new Elections();
+        sampleElection.setElectionId(1L);
+        sampleElection.setTitle("Election 1");
+        sampleElection.setDescription("Unit test election");
+        sampleElection.setStartDate(LocalDateTime.now());
+        sampleElection.setEndDate(LocalDateTime.now().plusDays(1));
+        sampleElection.setElectionStatus(true);
     }
 
     @Test
@@ -96,7 +94,7 @@ class ElectionsControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().string(containsString("Election 1")));
     }
-    
+
     @Test
     @DisplayName("PUT /api/elections/{id} - should update election")
     void shouldUpdateElection1() throws Exception {
@@ -118,9 +116,13 @@ class ElectionsControllerTest {
     void shouldUpdateElection() throws Exception {
         when(electionsService.updateElection(eq(1L), any(Elections.class))).thenReturn(sampleElection);
 
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         mockMvc.perform(put("/api/elections/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(sampleElection)))
+                        .content(mapper.writeValueAsString(sampleElection)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Election 1")));
     }
