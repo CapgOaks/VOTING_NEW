@@ -1,23 +1,28 @@
 package com.capgemini.security4.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginDto {
-	private String userName;
-	private String passwordHash;
 
-	public String getUserName() {
-		return userName;
-	}
+    @NotBlank(message = "Username or email is required")
+    private String userName;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    @NotBlank(message = "Password is required")
+    private String password;
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

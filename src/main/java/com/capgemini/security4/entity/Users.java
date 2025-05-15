@@ -60,5 +60,7 @@ public class Users {
     @Pattern(regexp = "admin|user", message = "Role must be ADMIN, USER ")
     @Column(name="role")
     private String role; 
+	
+	public Users (Long userId) {}
 }
 

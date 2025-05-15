@@ -21,24 +21,23 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Candidates {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "candidate_id")
-    private Long candidateId;
-    
-	@ManyToOne
-    @JoinColumn(name = "party_id", referencedColumnName = "party_id")
-    private Party party;
-    
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private Users user;
-    
-    @Size(max = 1000, message = "Manifesto must be less than 1000 characters")
-    @Column(name = "manifesto", nullable = true)
-    private String manifesto;
-    
-    @ManyToOne
-    @JoinColumn(name = "election_id", referencedColumnName = "election_id")
-    private Elections election;
-}
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "candidate_id")
+	private Long candidateId;
 
+	@ManyToOne
+	@JoinColumn(name = "party_id", referencedColumnName = "party_id", insertable = false, updatable = false)
+	private Party party;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+	private Users user;
+
+	@Size(max = 1000, message = "Manifesto must be less than 1000 characters")
+	@Column(name = "manifesto", nullable = true)
+	private String manifesto;
+
+	@ManyToOne
+	@JoinColumn(name = "election_id", referencedColumnName = "election_id", insertable = false, updatable = false)
+	private Elections election;
+}
