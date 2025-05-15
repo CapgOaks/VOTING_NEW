@@ -44,15 +44,15 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPasswordHash()));
 
 		if (authentication.isAuthenticated()) {
-			Users user = userService.findByUserNameOrUserEmail(loginDto.getUsername(), loginDto.getUsername());
+			Users user = userService.findByUserNameOrUserEmail(loginDto.getUserName(), loginDto.getUserName());
 			Map<String, Object> claims = new HashMap<>();
 			claims.put("email", user.getUserEmail());
 			claims.put("userid", user.getUserId());
 			claims.put("usertype", user.getRole());
-			String token = jwtService.generateToken(loginDto.getUsername(), claims);
+			String token = jwtService.generateToken(loginDto.getUserName(), claims);
 			ResponseToken responseToken = new ResponseToken(token);
 			return ResponseEntity.status(HttpStatus.OK).body(responseToken);
 		}
