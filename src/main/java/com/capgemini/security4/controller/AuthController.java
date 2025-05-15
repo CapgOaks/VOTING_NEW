@@ -48,7 +48,7 @@ public class AuthController {
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 		log.info("Attempting authentication for user: {}", loginDto.getUsername());
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPasswordHash()));
 
 		if (authentication.isAuthenticated()) {
 			log.info("Authentication successful for user: {}", loginDto.getUsername());
@@ -57,6 +57,7 @@ public class AuthController {
 			claims.put("email", user.getUserEmail());
 			claims.put("userid", user.getUserId());
 			claims.put("usertype", user.getRole());
+
 			String token = jwtService.generateToken(loginDto.getUsername(), claims);
 			log.info("JWT token generated for user: {}", loginDto.getUsername());
 			ResponseToken responseToken = new ResponseToken(token);
