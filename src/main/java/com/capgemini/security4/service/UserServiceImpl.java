@@ -2,6 +2,7 @@ package com.capgemini.security4.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,17 +16,14 @@ import com.capgemini.security4.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
 	UserRepository userRepository;
-	PasswordEncoder passwordEncoder;	
+	PasswordEncoder passwordEncoder;
 
 	@Override
 	public Users createUser(Users user) {
 		user.setCreatedAt(LocalDate.now());
-		
-		if(user.getPasswordHash() != null) {
-			user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
-		}
 		return userRepository.save(user);
 	}
+
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		super();
@@ -50,8 +48,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Users findByUserNameOrUserEmail(String userName, String email) {
-		return userRepository.findByUserNameOrUserEmail(userName, email)
-				.orElseThrow(() -> new UserNotFoundException("Username or Email not Found !"));
+		System.out.println("User Name " + userName);
+		System.out.println("Email " + email);
+		Optional<Users> optUser = userRepository.findByUserNameOrUserEmail(userName, email);
+		if (optUser.isPresent()) {
+			return optUser.get();
+		}
+		throw new UserNotFoundException("Username or Email not Found !");
 	}
 
 	@Override
@@ -65,12 +68,13 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 		existing.setUserName(user.getUserName());
 		existing.setUserEmail(user.getUserEmail());
-		existing.setPasswordHash(user.getPasswordHash());
 		existing.setDob(user.getDob());
-		
-		if(user.getPasswordHash() !=null && !user.getPasswordHash().isBlank()) {
+
+		if (user.getPasswordHash() != null && !user.getPasswordHash().isBlank()) {
+			// Encode password before saving
 			existing.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
 		}
+
 		return userRepository.save(existing);
 
 	}
@@ -78,7 +82,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(Long userId) {
 		if (!userRepository.existsByUserId(userId)) {
-			throw new UserNotFoundException("Cannot delete. Job not found with ID: " + userId);
+			throw new UserNotFoundException("Cannot delete. USer not found with ID: " + userId);
 		}
 		userRepository.deleteById(userId);
 	}
