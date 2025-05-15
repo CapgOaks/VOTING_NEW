@@ -42,7 +42,7 @@ class ElectionsControllerTest {
 
     @MockBean
     private JwtUtils jwtUtils;
-
+ 
     
     @MockBean
     private com.capgemini.security4.security.CustomUserDetailsService customUserDetailsService;
