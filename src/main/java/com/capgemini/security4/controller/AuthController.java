@@ -21,18 +21,19 @@ import com.capgemini.security4.entity.Users;
 import com.capgemini.security4.exception.UserAlreadyExistsException;
 import com.capgemini.security4.security.JwtUtils;
 import com.capgemini.security4.service.UserService;
+import com.capgemini.security4.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
 	AuthenticationManager authenticationManager;
-	UserService userService;
+	UserServiceImpl userService;
 	PasswordEncoder passwordEncoder;
 	JwtUtils jwtService;
 
 	@Autowired
-	public AuthController(AuthenticationManager authenticationManager, UserService userService,
+	public AuthController(AuthenticationManager authenticationManager, UserServiceImpl userService,
 			PasswordEncoder passwordEncoder, JwtUtils jwtService) {
 		this.userService = userService;
 		this.authenticationManager = authenticationManager;
