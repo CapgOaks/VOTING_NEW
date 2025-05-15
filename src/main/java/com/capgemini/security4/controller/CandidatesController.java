@@ -35,6 +35,13 @@ public class CandidatesController {
 		List<Candidates> candidates = candidatesService.getAllCandidates();
 		return ResponseEntity.status(HttpStatus.OK).body(candidates);
 	}
+	@GetMapping("/{id}")
+	public ResponseEntity<Candidates> getCandidateById(@PathVariable Long id) {
+	    Candidates candidate = candidatesService.getCandidatesById(id);
+	    return ResponseEntity.ok(candidate);
+	}
+
+	
 	@PostMapping
 	public ResponseEntity<Candidates> createCandidates(@RequestBody Candidates  candidates) {
 		Candidates saved = candidatesService.createCandidates(candidates);

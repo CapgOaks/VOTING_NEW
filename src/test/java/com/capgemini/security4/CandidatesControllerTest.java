@@ -26,6 +26,7 @@ import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.entity.Elections;
 import com.capgemini.security4.entity.Party;
 import com.capgemini.security4.entity.Users;
+import com.capgemini.security4.security.CustomUserDetailsService;
 import com.capgemini.security4.security.JwtUtils;
 import com.capgemini.security4.service.CandidatesService;
 
@@ -35,12 +36,15 @@ class CandidatesControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    
-    @MockBean
-    private JwtUtils jwtUtils;
 
     @MockBean
     private CandidatesService candidatesService;
+    
+    @MockBean
+    private JwtUtils jwtUtils;
+    
+    @MockBean
+    private CustomUserDetailsService customUserDetailsService;
 
     private Candidates candidate;
     private Users user;
@@ -151,10 +155,9 @@ class CandidatesControllerTest {
     void shouldDeleteCandidate() throws Exception {
         doNothing().when(candidatesService).deleteCandidates(1L);
 
-        mockMvc.perform(delete("/api/candidates/1")) // FIXED: removed "L"
+        mockMvc.perform(delete("/api/candidates/1"))
                .andExpect(status().isNoContent())
                .andDo(print());
     }
-
 
 }
