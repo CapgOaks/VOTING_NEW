@@ -4,37 +4,45 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.capgemini.security4.entity.Results;
 import com.capgemini.security4.service.ResultsServiceImpl;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
-@RequestMapping("/api/results")
+@RequestMapping("/api/results/")
+@Slf4j
 public class ResultsController {
 
-	ResultsServiceImpl resultsService;
+    ResultsServiceImpl resultsService;
 
-	public ResultsController(ResultsServiceImpl resultsService) {
-		this.resultsService = resultsService;
-	}
+    public ResultsController(ResultsServiceImpl resultsService) {
+        this.resultsService = resultsService;
+    }
 
-	@GetMapping({ "/", "" })
-	public ResponseEntity<List<Results>> getAllResults() {
-		return ResponseEntity.status(HttpStatus.OK).body(resultsService.findAllResults());
-	}
+    @GetMapping({ "/", "" })
+    public ResponseEntity<List<Results>> getAllResults() {
+        log.info("GET /api/results - Fetching all election results");
+        List<Results> results = resultsService.findAllResults();
+        log.info("Fetched {} results", results.size());
+        return ResponseEntity.status(HttpStatus.OK).body(results);
+    }
 
-	@GetMapping("/{electionId}")
-	public ResponseEntity<List<Results>> getResultsByElectionId(@PathVariable Long electionId) {
-		return ResponseEntity.status(HttpStatus.OK).body(resultsService.findResultsByElectionId(electionId));
-	}
+    @GetMapping("/{electionId}")
+    public ResponseEntity<List<Results>> getResultsByElectionId(@PathVariable Long electionId) {
+        log.info("GET /api/results/{} - Fetching results for electionId={}", electionId, electionId);
+        List<Results> results = resultsService.findResultsByElectionId(electionId);
+        log.info("Found {} result(s) for electionId={}", results.size(), electionId);
+        return ResponseEntity.status(HttpStatus.OK).body(results);
+    }
 
-	@PostMapping("/decalre/{electionId}")
-	public ResponseEntity<Results> declareResult(@PathVariable Long electionId) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(resultsService.declareResult(electionId));
-	}
+    @PostMapping("/decalre/{electionId}")
+    public ResponseEntity<Results> declareResult(@PathVariable Long electionId) {
+        log.info("POST /api/results/decalre/{} - Declaring result for electionId={}", electionId, electionId);
+        Results result = resultsService.declareResult(electionId);
+        log.info("Result declared for electionId={}: {}", electionId, result);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
 }

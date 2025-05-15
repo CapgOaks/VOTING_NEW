@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,7 @@ public class Candidates {
     @Column(name = "candidate_id")
     private Long candidateId;
     
-    @ManyToOne
+	@ManyToOne
     @JoinColumn(name = "party_id", referencedColumnName = "party_id")
     private Party party;
     
@@ -31,6 +33,7 @@ public class Candidates {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private Users user;
     
+    @Size(max = 1000, message = "Manifesto must be less than 1000 characters")
     @Column(name = "manifesto", nullable = true)
     private String manifesto;
     

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.security4.entity.Users;
@@ -14,16 +15,22 @@ import com.capgemini.security4.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
 	UserRepository userRepository;
-
-	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	PasswordEncoder passwordEncoder;	
 
 	@Override
 	public Users createUser(Users user) {
 		user.setCreatedAt(LocalDate.now());
+		
+		if(user.getPasswordHash() != null) {
+			user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+		}
 		return userRepository.save(user);
+	}
+	@Autowired
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		super();
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -60,6 +67,10 @@ public class UserServiceImpl implements UserService {
 		existing.setUserEmail(user.getUserEmail());
 		existing.setPasswordHash(user.getPasswordHash());
 		existing.setDob(user.getDob());
+		
+		if(user.getPasswordHash() !=null && !user.getPasswordHash().isBlank()) {
+			existing.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+		}
 		return userRepository.save(existing);
 
 	}

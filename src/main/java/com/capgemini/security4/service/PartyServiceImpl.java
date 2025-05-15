@@ -65,7 +65,7 @@ public class PartyServiceImpl implements PartyService {
 		Party existing = getPartyById(id);
 		existing.setPartyName(updatedParty.getPartyName());
 		existing.setPartyStatus(updatedParty.getPartyStatus());
-		existing.setPartyLogo(updatedParty.getPartyLogo());
+		existing.setPartyLogo(existing.getPartyLogo());
 		return partyRepository.save(existing);
 	}
 

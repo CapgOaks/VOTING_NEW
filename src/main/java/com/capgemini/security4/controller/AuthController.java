@@ -23,8 +23,11 @@ import com.capgemini.security4.security.JwtUtils;
 import com.capgemini.security4.service.UserService;
 import com.capgemini.security4.service.UserServiceImpl;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
 	AuthenticationManager authenticationManager;
@@ -43,28 +46,42 @@ public class AuthController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
+		log.info("Attempting authentication for user: {}", loginDto.getUsername());
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPasswordHash()));
 
 		if (authentication.isAuthenticated()) {
+			log.info("Authentication successful for user: {}", loginDto.getUsername());
 			Users user = userService.findByUserNameOrUserEmail(loginDto.getUsername(), loginDto.getUsername());
 			Map<String, Object> claims = new HashMap<>();
 			claims.put("email", user.getUserEmail());
 			claims.put("userid", user.getUserId());
 			claims.put("usertype", user.getRole());
+
 			String token = jwtService.generateToken(loginDto.getUsername(), claims);
+			log.info("JWT token generated for user: {}", loginDto.getUsername());
 			ResponseToken responseToken = new ResponseToken(token);
 			return ResponseEntity.status(HttpStatus.OK).body(responseToken);
 		}
+		log.warn("Authentication failed for user: {}", loginDto.getUsername());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not Authorized !!");
 	}
 
 	@PostMapping("/register")
 	public ResponseEntity<Users> registerUser(@RequestBody Users user) {
-		if (userService.existsByUserName(user.getUserName()) || userService.existsByUserEmail(user.getUserEmail()))
+		log.info("Registering user: {}", user.getUserName());
+
+		if (userService.existsByUserName(user.getUserName()) || userService.existsByUserEmail(user.getUserEmail())) {
+			log.warn("Username or email already exists for: {}", user.getUserName());
 			throw new UserAlreadyExistsException("Username or Email Exists !");
+		}
+
 		user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
 
-		return ResponseEntity.status(HttpStatus.OK).body(userService.createUser(user));
+		Users savedUser = userService.createUser(user);
+
+		log.info("User registered successfully: {}", savedUser.getUserName());
+
+		return ResponseEntity.status(HttpStatus.OK).body(savedUser);
 	}
 }
