@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.capgemini.security4.entity.Elections;
 import com.capgemini.security4.entity.Results;
@@ -13,6 +14,7 @@ import com.capgemini.security4.repository.ElectionsRepository;
 import com.capgemini.security4.repository.ResultsRepository;
 import com.capgemini.security4.repository.VotesRepository;
 
+@Service
 public class ResultsServiceImpl implements ResultsService {
 
 	private ResultsRepository resultsRepository;
