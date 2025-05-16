@@ -48,8 +48,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Users findByUserNameOrUserEmail(String userName, String email) {
-		System.out.println("User Name " + userName);
-		System.out.println("Email " + email);
+		
 		Optional<Users> optUser = userRepository.findByUserNameOrUserEmail(userName, email);
 		if (optUser.isPresent()) {
 			return optUser.get();

@@ -5,7 +5,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 });
 
 function verify() {
-  const email = document.getElementById("email").value;
+  const username = document.getElementById("userName").value;
   const password = document.getElementById("password").value;
 
   fetch("http://localhost:8080/auth/signin", {
@@ -13,10 +13,9 @@ function verify() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username: email, password: password })
+    body: JSON.stringify({ userName: username, password: password })
   })
     .then(response => {
-      // Handle HTTP status codes with console logs
       if (response.status === 200) {
         return response.json();
       } else if (response.status === 404) {

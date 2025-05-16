@@ -91,7 +91,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<Users> getUserById(@PathVariable Long userId) {
-        Users user = userService.findByUserId(userId); // if not found, let exception be thrown
+        Users user = userService.findByUserId(userId); 
         return ResponseEntity.ok(user);
     }
 	

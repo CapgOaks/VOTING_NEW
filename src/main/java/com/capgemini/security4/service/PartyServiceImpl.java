@@ -19,7 +19,7 @@ import java.util.UUID;
 public class PartyServiceImpl implements PartyService {
 
 	private final PartyRepository partyRepository;
-	private final String UPLOAD_DIR = "uploads/";
+	private static final String UPLOAD_DIR = "uploads/";
 
 	@Autowired
 	public PartyServiceImpl(PartyRepository partyRepository) {

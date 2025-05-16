@@ -21,7 +21,7 @@ import com.capgemini.security4.repository.ElectionsRepository;
 import com.capgemini.security4.service.ElectionsServiceImpl;
 
 @DisplayName("Elections Service Impl Test")
-public class ElectionsServiceImplTest {
+class ElectionsServiceImplTest {
 
     @Mock
     private ElectionsRepository electionsRepository;
