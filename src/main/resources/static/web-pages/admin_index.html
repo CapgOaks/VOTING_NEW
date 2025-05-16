@@ -67,13 +67,7 @@
 
     <!-- Main Content -->
     <div class="p-4" style="flex: 1;" id="main-content">
-      <h2>Welcome to Admin Dashboard</h2>
-      <p><strong>User ID:</strong> <span id="userId"></span></p>
-      <p><strong>User Name:</strong> <span id="userName"></span></p>
-      <p><strong>User Type:</strong> <span id="userType"></span></p>
-      <p><strong>Email :</strong> <span id="email"></span></p>
-
-      <button class="btn btn-danger" onclick="logout()">Logout</button>
+      
     </div>
   </div>
 
@@ -81,7 +75,7 @@
   <footer class="bg-dark text-white text-center py-3">
     &copy; 2025 User Dashboard. All rights reserved.
   </footer>
-  <script src="js/script.js"></script>
+  <script src="js/admin/admin_index.js" type="module"></script>
   <script>
     document.getElementById("userId").textContent = getUserId();
     document.getElementById("userName").textContent = getUserName();
