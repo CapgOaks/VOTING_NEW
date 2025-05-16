@@ -26,14 +26,13 @@ async function apiRequest(method, endpoint, data) {
     return response.json();
 }
 
-// Simple API methods
+/**
+ * usage: api.post('auth/login', { username, password });
+ * @param {string} endpoint
+ */
 export const api = {
     get: (endpoint) => apiRequest('GET', endpoint),
     post: (endpoint, data) => apiRequest('POST', endpoint, data),
     put: (endpoint, data) => apiRequest('PUT', endpoint, data),
     delete: (endpoint) => apiRequest('DELETE', endpoint),
 };
-
-// Example usage:
-// api.get('users/me');
-// api.post('auth/login', { username, password });
