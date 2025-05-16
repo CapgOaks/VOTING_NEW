@@ -36,7 +36,7 @@ public class AuthController {
 
 	@Autowired
 	public AuthController(AuthenticationManager customAuthenticationManager, UserServiceImpl userService,
-						  PasswordEncoder passwordEncoder, JwtUtils jwtService) {
+			PasswordEncoder passwordEncoder, JwtUtils jwtService) {
 		this.userService = userService;
 		this.authenticationManager = customAuthenticationManager;
 		this.passwordEncoder = passwordEncoder;
@@ -50,17 +50,12 @@ public class AuthController {
 
 		try {
 			Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							loginDto.getUserName(), loginDto.getPassword()
-					)
-			);
+					new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword()));
 
 			if (authentication.isAuthenticated()) {
 				log.info("Authentication successful for user: {}", loginDto.getUserName());
 
-				Users user = userService.findByUserNameOrUserEmail(
-						loginDto.getUserName(), loginDto.getUserName()
-				);
+				Users user = userService.findByUserNameOrUserEmail(loginDto.getUserName(), loginDto.getUserName());
 
 				Map<String, Object> claims = new HashMap<>();
 				claims.put("email", user.getUserEmail());
@@ -92,7 +87,8 @@ public class AuthController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password cannot be null or blank");
 		}
 
-		if (userService.existsByUserName(userDto.getUserName()) || userService.existsByUserEmail(userDto.getUserEmail())) {
+		if (userService.existsByUserName(userDto.getUserName())
+				|| userService.existsByUserEmail(userDto.getUserEmail())) {
 			log.warn("Username or email already exists for: {}", userDto.getUserName());
 			throw new UserAlreadyExistsException("Username or Email Exists !");
 		}
