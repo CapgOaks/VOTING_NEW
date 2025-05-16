@@ -1,6 +1,6 @@
 package com.capgemini.security4.service;
 
-//package com.capgemini.security4.service.impl;
+
 
 import com.capgemini.security4.entity.Votes;
 import com.capgemini.security4.repository.VotesRepository;
@@ -38,7 +38,7 @@ public class VotesServiceImpl implements VotesService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User has already voted");
         }
 
-        vote.setTimestamp(LocalDateTime.now());
+        vote.setTimeStamp(LocalDateTime.now());
         return votesRepository.save(vote);
     }
 }

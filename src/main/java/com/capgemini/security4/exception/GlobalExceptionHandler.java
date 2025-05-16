@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<String> handleUserAlreadyExistsException(UserNotFoundException ex) {
+	public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
 
@@ -34,17 +34,34 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(PartyNotFoundException.class)
-	public ResponseEntity<String> handlePartyAlreadyExistsException(PartyNotFoundException ex) {
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	public ResponseEntity<String> handlePartyNotFoundException(PartyNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
 
 	@ExceptionHandler(ResultNotFoundException.class)
 	public ResponseEntity<String> handleResultNotFoundException(ResultNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
-	
+
+	@ExceptionHandler(DuplicateVoteException.class) 
+	public ResponseEntity<String> handleDuplicateVoteException(DuplicateVoteException ex) {
+	    return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	}
+
+	@ExceptionHandler(InvalidVoteException.class)
+	public ResponseEntity<String> handleInvalidVoteException(InvalidVoteException ex) {
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  	}
+
 	@ExceptionHandler(CandidateAlreadyExistException.class)
-	public ResponseEntity<String> handleCandidateAlreadyExistsException(UserAlreadyExistsException ex) {
+	public ResponseEntity<String> handleCandidateAlreadyExistsException(CandidateAlreadyExistException ex) {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	}
+
+	// Generic fallback for any other unhandled exceptions
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> handleGlobalException(Exception ex) {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body("An unexpected error occurred: " + ex.getMessage());
 	}
 }

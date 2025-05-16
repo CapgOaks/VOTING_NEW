@@ -1,10 +1,12 @@
 package com.capgemini.security4.controller;
 
+import java.net.BindException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.security4.entity.Elections;
 import com.capgemini.security4.service.ElectionsService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -58,7 +61,13 @@ public class ElectionsController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Elections> createElection(@RequestBody Elections election) {
+	public ResponseEntity<Elections> createElection(@Valid @RequestBody Elections election,
+			BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
+		}
+
 		log.info("Creating new election: {}", election);
 		Elections created = electionsService.createElection(election);
 		log.info("Election created successfully: {}", created);
@@ -66,7 +75,13 @@ public class ElectionsController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Elections> updateElection(@PathVariable Long id, @RequestBody Elections updatedElection) {
+	public ResponseEntity<Elections> updateElection(@PathVariable Long id,
+			@Valid @RequestBody Elections updatedElection, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
+		}
+
 		log.info("Updating election with ID: {}. New data: {}", id, updatedElection);
 		Elections updated = electionsService.updateElection(id, updatedElection);
 		log.info("Election updated successfully: {}", updated);
