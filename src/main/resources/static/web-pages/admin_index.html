@@ -30,39 +30,48 @@
 
   <div class="d-flex">
     <!-- Sidebar -->
-    <div class="bg-dark text-white sidebar p-3" style="width: 250px; min-height: 100vh;">
-      <h5 class="text-white mb-3">Navigation</h5>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a href="#" class="nav-link text-white" onclick="loadPage('dashboard.html')">
-            <i class="fa fa-chart-line me-2"></i> Dashboard
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menu1">
-            <i class="fa fa-layer-group me-2"></i> Menu 1
-          </a>
-          <div class="collapse" id="menu1">
-            <ul class="nav flex-column ms-3">
-              <li><a href="#" class="nav-link text-white" onclick="loadPage('pages/instructor.html')">Instructor</a>
-              </li>
-              <li><a href="#" class="nav-link text-white" onclick="loadPage('page2.html')">Page 2</a></li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menu2">
-            <i class="fa fa-cog me-2"></i> Settings
-          </a>
-          <div class="collapse" id="menu2">
-            <ul class="nav flex-column ms-3">
-              <li><a href="#" class="nav-link text-white" onclick="loadPage('page3.html')">Page 3</a></li>
-              <li><a href="#" class="nav-link text-white" onclick="loadPage('page4.html')">Page 4</a></li>
-              <li><a href="#" class="nav-link text-white" onclick="loadPage('form.html')">Form</a></li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+    <!-- Sidebar -->
+<div class="bg-dark text-white sidebar p-3" style="width: 250px; min-height: 100vh;">
+  <h5 class="text-white mb-3">Navigation</h5>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a href="#" class="nav-link text-white" onclick="loadPage('admin_profile.html')">
+        <i class="fa fa-user-shield me-2"></i> Admin Profile
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link text-white" onclick="loadPage('register_candidate.html')">
+        <i class="fa fa-user-plus me-2"></i> Register Candidate
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link text-white" onclick="loadPage('register_party.html')">
+        <i class="fa fa-flag me-2"></i> Register Party
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link text-white" onclick="loadPage('create_election.html')">
+        <i class="fa fa-vote-yea me-2"></i> Create Election
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link text-white" onclick="loadPage('list_election.html')">
+        <i class="fa fa-vote-yea me-2"></i> List of Election
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link text-white" onclick="loadPage('reports.html')">
+        <i class="fa fa-file-alt me-2"></i> Reports
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link text-white" onclick="loadPage('charts.html')">
+        <i class="fa fa-chart-pie me-2"></i> Charts
+      </a>
+    </li>
+  </ul>
+</div>
+
     </div>
     
     <!-- Main Content -->

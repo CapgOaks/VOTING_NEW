@@ -30,13 +30,13 @@
     <h5 class="text-white mb-3">Navigation</h5>
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a href="#" class="nav-link text-white" onclick="loadPage('dashboard.html')">
-          <i class="fa fa-chart-line me-2"></i> Dashboard
+        <a href="#" class="nav-link text-white" onclick="loadPage('profile.html')">
+          <i class="fa fa-chart-line me-2"></i> profile
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menu1">
-          <i class="fa fa-layer-group me-2"></i> Menu 1
+          <i class="fa fa-layer-group me-2"></i>  
         </a>
         <div class="collapse" id="menu1">
           <ul class="nav flex-column ms-3">
@@ -44,6 +44,16 @@
             <li><a href="#" class="nav-link text-white" onclick="loadPage('page2.html')">Page 2</a></li>
           </ul>
         </div>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-white" onclick="loadPage('Elections.html')">
+          <i class="fa fa-chart-line me-2"></i> All Elections
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-white" onclick="loadPage('caste vote.html')">
+          <i class="fa fa-chart-line me-2"></i> Caste vote
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menu2">
@@ -63,12 +73,9 @@
   <!-- Main Content -->
   <div class="p-4" style="flex: 1;" id="main-content">
     <h2>Welcome to User Dashboard</h2>
-    <p><strong>User ID:</strong> <span id="userId"></span></p>
-    <p><strong>User Name:</strong> <span id="userName"></span></p>
-    <p><strong>User Type:</strong> <span id="userType"></span></p>
-    <p><strong>Email :</strong> <span id="email"></span></p>
     
-    <button class="btn btn-danger" onclick="logout()">Logout</button>
+    
+    
   </div>
 </div>
 
