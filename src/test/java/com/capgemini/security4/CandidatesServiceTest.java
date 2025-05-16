@@ -12,15 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.repository.CandidatesRepository;
-import com.capgemini.security4.service.CandidatesService;
 import com.capgemini.security4.service.CandidatesServiceImpl;
 
 @ExtendWith(MockitoExtension.class) 
-public class CandidatesServiceTest {
+class CandidatesServiceTest {
 	@Mock
     private CandidatesRepository candidatesRepository;
 

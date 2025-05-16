@@ -2,7 +2,6 @@ package com.capgemini.security4.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -12,15 +11,11 @@ public class LoggingPasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {
-        String encoded = delegate.encode(rawPassword);
-        log.info("Encoding password: raw='{}', encoded='{}'", rawPassword, encoded);
-        return encoded;
+        return delegate.encode(rawPassword);
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        boolean matches = delegate.matches(rawPassword, encodedPassword);
-        log.info("Matching password: raw='{}', encoded='{}', result={}", rawPassword, encodedPassword, matches);
-        return matches;
+        return delegate.matches(rawPassword, encodedPassword);
     }
 }
