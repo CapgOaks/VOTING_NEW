@@ -37,7 +37,7 @@ function verify() {
         throw new Error("Token Not Found");
 
       const userType = getUserType();
-      if (userType === "ADMIN") {
+      if (userType === "admin") {
         window.location.href = "admin_index.html";
       } else {
         window.location.href = "user_index.html";
