@@ -1,0 +1,69 @@
+<!-- dashboard.html -->
+<div class="container mt-4">
+  <h2 class="mb-4">Welcome, Admin 👋</h2>
+
+  <!-- Summary Cards -->
+  <div class="row text-center">
+    <div class="col-md-3 mb-3">
+      <div class="card bg-primary text-white shadow">
+        <div class="card-body">
+          <h5>Total Candidates</h5>
+          <h3 id="total-candidates">--</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card bg-success text-white shadow">
+        <div class="card-body">
+          <h5>Registered Voters</h5>
+          <h3 id="registered-voters">--</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card bg-warning text-dark shadow">
+        <div class="card-body">
+          <h5>Ongoing Elections</h5>
+          <h3 id="ongoing-elections">--</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card bg-info text-white shadow">
+        <div class="card-body">
+          <h5>Votes Today</h5>
+          <h3 id="votes-today">--</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Recent Elections Table -->
+  <h4 class="mt-4">Recent Elections</h4>
+  <table class="table table-striped mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>Election Name</th>
+        <th>Dates</th>
+        <th>Status</th>
+        <th>Total Votes</th>
+      </tr>
+    </thead>
+    <tbody id="recent-elections-body">
+      <!-- JavaScript will inject rows here -->
+    </tbody>
+  </table>
+
+  <!-- Quick Actions -->
+  <div class="mt-4">
+    <h4>Quick Actions</h4>
+    <div class="d-flex flex-wrap gap-3 mt-3">
+      <button class="btn btn-outline-primary" id="btn-add-candidate">➕ Add Candidate</button>
+      <button class="btn btn-outline-success" id="btn-create-election">🗓️ Create Election</button>
+      <button class="btn btn-outline-dark" id="btn-view-reports">📑 View Reports</button>
+      <button class="btn btn-outline-info" id="btn-view-charts">📊 View Charts</button>
+    </div>
+  </div>
+</div>
