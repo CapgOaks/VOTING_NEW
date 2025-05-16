@@ -11,21 +11,23 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,17 +36,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("ElectionsController Test Suite")
 class ElectionsControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @TestConfiguration
+    static class TestConfig {
 
-    @MockBean
-    private ElectionsService electionsService;
+        @Bean
+        @Primary
+        public ElectionsService electionsService() {
+            return mock(ElectionsService.class);
+        }
 
-    @MockBean
-    private JwtUtils jwtUtils;
+        @Bean
+        @Primary
+        public JwtUtils jwtUtils() {
+            return mock(JwtUtils.class);
+        }
 
-    @MockBean
-    private com.capgemini.security4.security.CustomUserDetailsService customUserDetailsService;
+        @Bean
+        @Primary
+        public com.capgemini.security4.security.CustomUserDetailsService customUserDetailsService() {
+            return mock(com.capgemini.security4.security.CustomUserDetailsService.class);
+        }
+    }
+
+    private final MockMvc mockMvc;
+    private final ElectionsService electionsService;
+
+    ElectionsControllerTest(MockMvc mockMvc, ElectionsService electionsService) {
+        this.mockMvc = mockMvc;
+        this.electionsService = electionsService;
+    }
 
     private Elections sampleElection;
 
@@ -66,7 +86,7 @@ class ElectionsControllerTest {
 
         mockMvc.perform(get("/api/elections"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Election 1")));
+                .andExpect(jsonPath("$[0].title").value("Election 1"));
     }
 
     @Test
@@ -76,7 +96,7 @@ class ElectionsControllerTest {
 
         mockMvc.perform(get("/api/elections/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Election 1")));
+                .andExpect(jsonPath("$.title").value("Election 1"));
     }
 
     @Test
@@ -92,23 +112,7 @@ class ElectionsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(sampleElection)))
                 .andExpect(status().isCreated())
-                .andExpect(content().string(containsString("Election 1")));
-    }
-
-    @Test
-    @DisplayName("PUT /api/elections/{id} - should update election")
-    void shouldUpdateElection1() throws Exception {
-        when(electionsService.updateElection(eq(1L), any(Elections.class))).thenReturn(sampleElection);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        mockMvc.perform(put("/api/elections/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(sampleElection)))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Election 1")));
+                .andExpect(jsonPath("$.title").value("Election 1"));
     }
 
     @Test
@@ -124,7 +128,7 @@ class ElectionsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(sampleElection)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Election 1")));
+                .andExpect(jsonPath("$.title").value("Election 1"));
     }
 
     @Test
@@ -133,7 +137,7 @@ class ElectionsControllerTest {
         doNothing().when(electionsService).deleteElection(1L);
 
         mockMvc.perform(delete("/api/elections/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -144,6 +148,6 @@ class ElectionsControllerTest {
         mockMvc.perform(get("/api/elections/status")
                         .param("status", "true"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Election 1")));
+                .andExpect(jsonPath("$[0].title").value("Election 1"));
     }
 }

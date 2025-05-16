@@ -11,36 +11,42 @@ import com.capgemini.security4.repository.CandidatesRepository;
 
 @Service
 public class CandidatesServiceImpl implements CandidatesService {
-	private CandidatesRepository candidatesRepository;
-	
-	@Autowired
-	public CandidatesServiceImpl(CandidatesRepository candidatesRepository) {
-		super();
-		this.candidatesRepository = candidatesRepository;
-	}
 
-	@Override
-	public List<Candidates> getAllCandidates() {
-		return candidatesRepository.findAll();
-	}
+    private static final String CANDIDATE_ID_PREFIX = "Candidate with id ";
+    private static final String CANDIDATE_NOT_FOUND = " Not Found";
 
-	@Override
-	public Candidates getCandidatesById(Long candidateId) {
-		return candidatesRepository.findById(candidateId).orElseThrow(()->new CandidateNotFound("Candidate with id "+candidateId+" Not Found"));
-	}
+    private final CandidatesRepository candidatesRepository;
 
-	@Override
-	public Candidates createCandidates(Candidates candidates) {
-		return candidatesRepository.save(candidates);
-	}
+    @Autowired
+    public CandidatesServiceImpl(CandidatesRepository candidatesRepository) {
+        this.candidatesRepository = candidatesRepository;
+    }
 
-	@Override
-	public Candidates updateCandidates(Long candidateId, Candidates candidates) {
-		Candidates existing=candidatesRepository.findById(candidateId).orElseThrow(()->new CandidateNotFound("Candidate with id "+candidateId+" Not Found"));
-		if(candidates.getParty()!=null) {
-			existing.setParty(candidates.getParty());
-		}
-		if (candidates.getUser() != null) {
+    @Override
+    public List<Candidates> getAllCandidates() {
+        return candidatesRepository.findAll();
+    }
+
+    @Override
+    public Candidates getCandidatesById(Long candidateId) {
+        return candidatesRepository.findById(candidateId)
+                .orElseThrow(() -> new CandidateNotFound(CANDIDATE_ID_PREFIX + candidateId + CANDIDATE_NOT_FOUND));
+    }
+
+    @Override
+    public Candidates createCandidates(Candidates candidates) {
+        return candidatesRepository.save(candidates);
+    }
+
+    @Override
+    public Candidates updateCandidates(Long candidateId, Candidates candidates) {
+        Candidates existing = candidatesRepository.findById(candidateId)
+                .orElseThrow(() -> new CandidateNotFound(CANDIDATE_ID_PREFIX + candidateId + CANDIDATE_NOT_FOUND));
+
+        if (candidates.getParty() != null) {
+            existing.setParty(candidates.getParty());
+        }
+        if (candidates.getUser() != null) {
             existing.setUser(candidates.getUser());
         }
         if (candidates.getManifesto() != null) {
@@ -49,14 +55,14 @@ public class CandidatesServiceImpl implements CandidatesService {
         if (candidates.getElection() != null) {
             existing.setElection(candidates.getElection());
         }
-		return candidatesRepository.save(existing);
-	}
 
-	@Override
-	public void deleteCandidates(Long candidateId) {
-		Candidates existing=candidatesRepository.findById(candidateId).orElseThrow(()->new CandidateNotFound("Candidate with id "+candidateId+" Not Found"));
-		candidatesRepository.deleteById(candidateId);
-		
-	}
+        return candidatesRepository.save(existing);
+    }
 
+    @Override
+    public void deleteCandidates(Long candidateId) {
+        candidatesRepository.findById(candidateId)
+                .orElseThrow(() -> new CandidateNotFound(CANDIDATE_ID_PREFIX + candidateId + CANDIDATE_NOT_FOUND));
+        candidatesRepository.deleteById(candidateId);
+    }
 }
