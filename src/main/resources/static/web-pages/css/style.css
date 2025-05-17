@@ -1,5 +1,31 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.d-flex {
+  flex: 1;
+}
+
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background-color: #343a40;
+}
+
+#main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Sidebar link hover (already correct) */
 .sidebar .nav-link:hover {
-    background-color: #495057;
-    border-radius: 5px;
-  }
-  
+  background-color: #495057;
+  border-radius: 5px;
+}
