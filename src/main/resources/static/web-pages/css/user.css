@@ -1,0 +1,15 @@
+/* User page specific styles */
+
+.profile-container, .cast-vote-container, .elections-container, .all-elections-container, .reports-container, .charts-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+#voteMessage {
+    font-weight: bold;
+}
