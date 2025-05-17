@@ -1,7 +1,10 @@
-// import loadPage from './utils/loadPage.js';
+import loadPage from "./utils/loadPage.js";
 
-// document.addEventListener("DOMContentLoaded", async () => {
-//     console.log('Admin index page loaded');
-    
-//     await loadPage('admin', 'dashboard');
-// });
+document.querySelectorAll(".nav-link[data-page]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const role = event.target.dataset.role;
+        const page = event.target.dataset.page;
+        loadPage(role, page);
+    });
+});

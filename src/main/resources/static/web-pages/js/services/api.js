@@ -11,10 +11,11 @@ import { getToken } from '../utils/jwtUtils.js';
  * @param {object} [data]
  */
 async function apiRequest(method, endpoint, data) {
+	console.log('api service called')
     const url = `${config.API_BASE_URL}/${endpoint}`;
     const headers = { 'Content-Type': 'application/json' };
     const token = getToken();
-    // if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
     const response = await fetch(url, {
         method,

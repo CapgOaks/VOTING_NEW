@@ -54,50 +54,52 @@
   <!-- Sidebar + Main Content -->
   <div class="content-wrapper">
     <!-- Sidebar -->
-    <div class="bg-dark text-white sidebar p-3">
-      <h5 class="text-white mb-3">Navigation</h5>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a href="#" data-role="user" data-page="profile" class="nav-link text-white" id="profile-link">
-            <i class="fa fa-user me-2"></i> Profile
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" data-role="user" data-page="cast_vote" class="nav-link text-white">
-            <i class="fa fa-vote-yea me-2"></i> Cast Vote
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#candidateMenu">
-            <i class="fa fa-users me-2"></i> Candidate
-          </a>
-          <div class="collapse" id="candidateMenu">
-            <ul class="nav flex-column ms-3">
-              <li>
-                <a href="#" class="nav-link text-white" onclick="loadPage('pages/elections.html')">
-                  Elections
-                </a>
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-white" onclick="loadPage('pages/all_elections.html')">
-            <i class="fa fa-list me-2"></i> All Elections
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-white" onclick="loadPage('pages/reports.html')">
-            <i class="fa fa-file-alt me-2"></i> Reports
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-white" onclick="loadPage('pages/charts.html')">
-            <i class="fa fa-chart-bar me-2"></i> Charts
-          </a>
-        </li>
-      </ul>
-    </div>
+    <!-- Sidebar -->
+<div class="bg-dark text-white sidebar p-3">
+  <h5 class="text-white mb-3">Navigation</h5>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a href="#" data-role="user" data-page="profile" class="nav-link text-white" id="profile-link">
+        <i class="fa fa-user me-2"></i> Profile
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" data-role="user" data-page="cast_vote" class="nav-link text-white">
+        <i class="fa fa-vote-yea me-2"></i> Cast Vote
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#candidateMenu">
+        <i class="fa fa-users me-2"></i> Candidate
+      </a>
+      <div class="collapse" id="candidateMenu">
+        <ul class="nav flex-column ms-3">
+          <li>
+            <a href="#" data-role="user" data-page="elections" class="nav-link text-white">
+              Elections
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a href="#" data-role="user" data-page="all_elections" class="nav-link text-white">
+        <i class="fa fa-list me-2"></i> All Elections
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" data-role="user" data-page="reports" class="nav-link text-white">
+        <i class="fa fa-file-alt me-2"></i> Reports
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" data-role="user" data-page="charts" class="nav-link text-white">
+        <i class="fa fa-chart-bar me-2"></i> Charts
+      </a>
+    </li>
+  </ul>
+</div>
+
 
     <!-- Main Content -->
     <div class="p-4" id="main-content">
