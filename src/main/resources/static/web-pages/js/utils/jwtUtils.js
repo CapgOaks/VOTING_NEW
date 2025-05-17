@@ -1,6 +1,6 @@
 // js/utils/jwtUtils.js
 
-const TOKEN_KEY = 'authToken';
+const TOKEN_KEY = 'token';
 
 /**
  * Save JWT to storage.

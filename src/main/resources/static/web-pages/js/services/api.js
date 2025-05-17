@@ -14,7 +14,7 @@ async function apiRequest(method, endpoint, data) {
     const url = `${config.API_BASE_URL}/${endpoint}`;
     const headers = { 'Content-Type': 'application/json' };
     const token = getToken();
-    // if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
     const response = await fetch(url, {
         method,
@@ -26,10 +26,10 @@ async function apiRequest(method, endpoint, data) {
     return response.json();
 }
 
-// /**
-//  * usage: api.post('auth/login', { username, password });
-//  * @param {string} endpoint
-//  */
+/**
+ * usage: api.post('auth/login', { username, password });
+ * @param {string} endpoint
+ */
 export const api = {
     get: (endpoint) => apiRequest('GET', endpoint),
     post: (endpoint, data) => apiRequest('POST', endpoint, data),
