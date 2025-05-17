@@ -1,42 +1,85 @@
-<h2 class="fw-bold mt-0 mb-4 display-6">Candidate Management</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-4">Candidate Management</h2>
+        
+        <!-- Candidate Form -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Add New Candidate</h5>
+            </div>
+            <div class="card-body">
+                <form id="candidateForm">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="userId" class="form-label">User</label>
+                            <select class="form-select" id="userId" required>
+                                <option value="">Select User...</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a user.</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="partyId" class="form-label">Party</label>
+                            <select class="form-select" id="partyId" required>
+                                <option value="">Select Party...</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a party.</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="electionId" class="form-label">Election</label>
+                            <select class="form-select" id="electionId" required>
+                                <option value="">Select Election...</option>
+                            </select>
+                            <div class="invalid-feedback">Please select an election.</div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="manifesto" class="form-label">Manifesto</label>
+                            <textarea class="form-control" id="manifesto" rows="3" maxlength="1000"></textarea>
+                            <div class="invalid-feedback">Manifesto must be less than 1000 characters.</div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Add Candidate</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Candidates Table -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>Candidate List</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Party</th>
+                                <th>Election</th>
+                                <th>Manifesto</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidateTableBody">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<form id="candidateForm" class="mb-4" novalidate>
-  <div class="mb-3">
-    <label for="userId" class="form-label">User</label>
-    <select class="form-select" id="userId" required></select>
-    <div class="invalid-feedback">Please select a user.</div>
-  </div>
-  <div class="mb-3">
-    <label for="partyId" class="form-label">Party</label>
-    <select class="form-select" id="partyId" required></select>
-    <div class="invalid-feedback">Please select a party.</div>
-  </div>
-  <div class="mb-3">
-    <label for="electionId" class="form-label">Election</label>
-    <select class="form-select" id="electionId" required></select>
-    <div class="invalid-feedback">Please select an election.</div>
-  </div>
-  <div class="mb-3">
-    <label for="manifesto" class="form-label">Manifesto</label>
-    <textarea class="form-control" id="manifesto" rows="3" maxlength="1000"></textarea>
-    <div class="invalid-feedback">Manifesto must be less than 1000 characters.</div>
-  </div>
-  <button type="submit" class="btn btn-success" id="submitBtn">Add Candidate</button>
-</form>
-
-<hr />
-
-<table class="table table-bordered table-striped">
-  <thead class="table-secondary">
-    <tr>
-      <th>User</th>
-      <th>Party</th>
-      <th>Election</th>
-      <th>Manifesto</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody id="candidateTableBody"></tbody>
-</table>
-<script type="module" src="../../js/admin/candidate.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/candidate.js"></script>
+</body>
+</html>
