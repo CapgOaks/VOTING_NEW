@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.capgemini.security4.dto.CandidateDto;
 import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.service.CandidatesService;
 
@@ -47,11 +48,18 @@ public class CandidatesController {
 		return ResponseEntity.ok(candidate);
 	}
 
+	@GetMapping("/election/{electionId}")
+	public ResponseEntity<List<CandidateDto>> getByElection(@PathVariable Long electionId) {
+		List<CandidateDto> dtos = candidatesService.getCandidatesByElectionId(electionId);
+		return ResponseEntity.ok(dtos);
+	}
+
 	@PostMapping
-	public ResponseEntity<Candidates> createCandidates(@Valid @RequestBody Candidates candidates,BindingResult bindingResult) {
+	public ResponseEntity<Candidates> createCandidates(@Valid @RequestBody Candidates candidates,
+			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-	        throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
-	    }
+			throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
+		}
 		log.info("Creating new candidate: {}", candidates);
 		Candidates saved = candidatesService.createCandidates(candidates);
 		log.info("Candidate created successfully: {}", saved);
@@ -59,10 +67,11 @@ public class CandidatesController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Candidates> updateCandidates(@PathVariable Long id,@Valid @RequestBody Candidates newCandidates,BindingResult bindingResult) {
+	public ResponseEntity<Candidates> updateCandidates(@PathVariable Long id,
+			@Valid @RequestBody Candidates newCandidates, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-	        throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
-	    }
+			throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
+		}
 		log.info("Updating candidate with ID: {}. New data: {}", id, newCandidates);
 		Candidates updated = candidatesService.updateCandidates(id, newCandidates);
 		log.info("Candidate updated successfully: {}", updated);
