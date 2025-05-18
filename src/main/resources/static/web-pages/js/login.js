@@ -1,4 +1,3 @@
-
 document.getElementById("loginForm").addEventListener("submit", function(e) {
 	e.preventDefault();
 	verify();
@@ -50,3 +49,10 @@ function verify() {
 		});
 }
 
+// New code to unmute background video on any click
+document.addEventListener("click", function() {
+	const bgVideo = document.getElementById("bg-video");
+	if (bgVideo && bgVideo.muted) {
+		bgVideo.muted = false;
+	}
+});

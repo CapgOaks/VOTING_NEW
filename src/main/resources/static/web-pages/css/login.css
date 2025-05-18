@@ -1,65 +1,80 @@
-
 body {
   background-color: #f0f2f5;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Align items to the left */
   height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
+  padding-left: 20px; /* Add some padding from the left edge */
 }
 
 .login-card {
-  background-color: #ffffff;
-  padding: 2.5rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* Remove transparency, solid white */
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   width: 100%;
-  max-width: 400px;
-  transition: box-shadow 0.3s ease;
+  max-width: 420px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  margin-left: 0; /* Remove left margin to shift fully left */
+  border: 3px solid #ff6600; /* Orange border */
 }
 
 .login-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 16px 40px rgba(255, 102, 0, 0.6);
+  transform: translateX(5px);
 }
 
 .login-card h2 {
-  margin-bottom: 1.8rem;
+  margin-bottom: 2rem;
   text-align: center;
-  color: #2c3e50;
-  font-weight: 600;
+  color: #ff6600; /* Orange text */
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(255,102,0,0.5);
 }
 
 .form-label {
-  font-weight: 500;
-  color: #34495e;
+  font-weight: 600;
+  color: #cc5200; /* Darker orange */
+  text-shadow: 1px 1px 2px rgba(204,82,0,0.4);
+  font-size: 1.1rem;
 }
 
 .form-control {
-  border-radius: 6px;
+  border-radius: 8px;
   transition: border-color 0.3s, box-shadow 0.3s;
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: #ff6600;
+  box-shadow: 0 0 0 0.25rem rgba(255, 102, 0, 0.4);
 }
 
 .btn-primary {
-  background-color: #1b4169;
+  background-color: #ff6600;
   width: 100%;
-  padding: 0.6rem;
-  font-weight: 500;
-  border-radius: 6px;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-radius: 8px;
   transition: background-color 0.3s, box-shadow 0.3s;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(255,102,0,0.4);
 }
 
 .btn-primary:hover {
-  background-color: #2e639c;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  background-color: #cc5200;
+  box-shadow: 0 6px 16px rgba(204, 82, 0, 0.6);
 }
 
 #error {
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-align: center;
+  margin-top: 1rem;
+  color: #d9534f;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
