@@ -15,8 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.capgemini.security4.dto.VoteRequestDto;
+import com.capgemini.security4.entity.Candidates;
+import com.capgemini.security4.entity.Elections;
 import com.capgemini.security4.entity.Users;
 import com.capgemini.security4.entity.Votes;
+import com.capgemini.security4.security.SecurityUtils;
+import com.capgemini.security4.service.CandidatesService;
+import com.capgemini.security4.service.CandidatesServiceImpl;
+import com.capgemini.security4.service.ElectionsService;
+import com.capgemini.security4.service.ElectionsServiceImpl;
 import com.capgemini.security4.service.UserService;
 import com.capgemini.security4.service.VotesService;
 
@@ -30,14 +38,18 @@ public class VotesController {
 
 	private VotesService votesService;
 	private UserService userService;
+	private CandidatesService candidatesService;
+	private ElectionsService electionsService;
 
 	@Autowired
-	public VotesController(VotesService votesService, UserService userService) {
+	public VotesController(VotesService votesService, UserService userService,
+			CandidatesServiceImpl candidatesServiceImpl, ElectionsServiceImpl electionsServiceImpl) {
 		super();
 		this.votesService = votesService;
 		this.userService = userService;
+		this.candidatesService = candidatesServiceImpl;
+		this.electionsService = electionsServiceImpl;
 	}
-	
 
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<Boolean> checkUserVoteStatus(@PathVariable Long userId) {
@@ -49,36 +61,45 @@ public class VotesController {
 		return ResponseEntity.ok(hasVoted);
 	}
 
+	@PostMapping
+	public ResponseEntity<Map<String, Object>> castVote(@Valid @RequestBody VoteRequestDto voteRequestDto,
+			BindingResult bindingResult) {
 
-	@PostMapping("/user/{userId}")
-	public ResponseEntity<Map<String, Object>> castVote(@PathVariable Long userId,
-	    @Valid @RequestBody Votes vote, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
+		}
 
-	    if (bindingResult.hasErrors()) {
-	        throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
-	    }
+		// Get authenticated user
+		String userName = SecurityUtils.getCurrentUser().getUsername();
+		Users currentUser = userService.findByUserNameOrUserEmail(userName, userName);
+		if (currentUser == null) {
+			throw new IllegalStateException("Authenticated user not found.");
+		}
 
-	    Users user = userService.findByUserId(userId);
-	    if (user == null) {
-	        throw new IllegalArgumentException("User not found with id: " + userId);
-	    }
+		// Retrieve candidate and election entities
+		Candidates candidate = candidatesService.getCandidatesById(voteRequestDto.getCandidateId());
+		Elections election = electionsService.getElectionById(voteRequestDto.getElectionId());
 
-	    vote.setUser(user);
+		if (candidate == null || election == null) {
+			throw new IllegalArgumentException("Invalid candidate or election ID.");
+		}
 
+		// Construct vote
+		Votes vote = new Votes();
+		vote.setUser(currentUser);
+		vote.setCandidate(candidate);
+		vote.setElection(election);
+		vote.setTimeStamp(LocalDateTime.now());
 
-	    vote.setTimeStamp(LocalDateTime.now());
+		Votes savedVote = votesService.castVote(vote);
 
-	    Votes savedVote = votesService.castVote(vote);
+		// Build response
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "Vote successfully cast");
+		response.put("voteId", savedVote.getVoteId());
+		response.put("timestamp", savedVote.getTimeStamp());
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", "Vote successfully cast");
-	    response.put("voteId", savedVote.getVoteId());
-	    response.put("timestamp", savedVote.getTimeStamp());
-
-	    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
-
-
-
 
 }

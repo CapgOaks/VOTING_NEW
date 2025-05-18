@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.security4.dto.CandidateDto;
 import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.exception.CandidateNotFound;
 import com.capgemini.security4.repository.CandidatesRepository;
@@ -32,7 +33,11 @@ public class CandidatesServiceImpl implements CandidatesService {
         return candidatesRepository.findById(candidateId)
                 .orElseThrow(() -> new CandidateNotFound(CANDIDATE_ID_PREFIX + candidateId + CANDIDATE_NOT_FOUND));
     }
-
+    
+    public List<CandidateDto> getCandidatesByElectionId(Long electionId) {
+        return candidatesRepository.findCandidateDtosByElectionId(electionId);
+    }
+    
     @Override
     public Candidates createCandidates(Candidates candidates) {
         return candidatesRepository.save(candidates);
