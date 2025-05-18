@@ -25,7 +25,7 @@ public class Candidates {
 	@Column(name = "candidate_id")
 	private Long candidateId;
 
-	@ManyToOne
+	@ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
 	@JoinColumn(name = "party_id", referencedColumnName = "party_id", insertable = false, updatable = false)
 	private Party party;
 

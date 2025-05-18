@@ -1,6 +1,4 @@
 package com.capgemini.security4.controller;
-
-import java.net.BindException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +55,14 @@ public class ElectionsController {
 		log.info("Fetching elections with status: {}", status);
 		List<Elections> elections = electionsService.getElectionsByStatus(status);
 		log.info("Found {} elections with status {}", elections.size(), status);
+		return ResponseEntity.status(HttpStatus.OK).body(elections);
+	}
+
+	@GetMapping("/upcoming")
+	public ResponseEntity<List<Elections>> getUpcomingElections() {
+		log.info("Fetching upcoming elections");
+		List<Elections> elections = electionsService.getUpcomingElections();
+		log.info("Found {} upcoming elections", elections.size());
 		return ResponseEntity.status(HttpStatus.OK).body(elections);
 	}
 
