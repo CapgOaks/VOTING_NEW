@@ -64,10 +64,13 @@ public class ElectionsServiceImpl implements ElectionsService {
     	electionsRepository.deleteById(id);
     }
 
-    @Override
+	@Override
     public List<Elections> getElectionsByStatus(Boolean status) {
         return electionsRepository.findByElectionStatus(status);
     }
 
-	
+    @Override
+    public List<Elections> getUpcomingElections() {
+        return electionsRepository.findUpcomingElections();
+    }
 }

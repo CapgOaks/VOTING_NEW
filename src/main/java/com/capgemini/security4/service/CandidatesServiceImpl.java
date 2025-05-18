@@ -65,4 +65,9 @@ public class CandidatesServiceImpl implements CandidatesService {
                 .orElseThrow(() -> new CandidateNotFound(CANDIDATE_ID_PREFIX + candidateId + CANDIDATE_NOT_FOUND));
         candidatesRepository.deleteById(candidateId);
     }
+
+    @Override
+    public List<com.capgemini.security4.dto.RunningCandidateDto> getRunningCandidates() {
+        return candidatesRepository.findRunningCandidates("active");
+    }
 }

@@ -77,4 +77,11 @@ public class CandidatesController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
+	@GetMapping("/running")
+	public ResponseEntity<List<com.capgemini.security4.dto.RunningCandidateDto>> getRunningCandidates() {
+		log.info("Fetching running candidates");
+		List<com.capgemini.security4.dto.RunningCandidateDto> runningCandidates = candidatesService.getRunningCandidates();
+		log.info("Found {} running candidates", runningCandidates.size());
+		return ResponseEntity.status(HttpStatus.OK).body(runningCandidates);
+	}
 }
