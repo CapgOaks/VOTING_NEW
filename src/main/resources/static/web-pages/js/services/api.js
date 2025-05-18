@@ -27,10 +27,10 @@ async function apiRequest(method, endpoint, data) {
     return response.json();
 }
 
-// /**
-//  * usage: api.post('auth/login', { username, password });
-//  * @param {string} endpoint
-//  */
+/**
+ * usage: api.post('auth/login', { username, password });
+ * @param {string} endpoint
+ */
 export const api = {
     get: (endpoint) => apiRequest('GET', endpoint),
     post: (endpoint, data) => apiRequest('POST', endpoint, data),

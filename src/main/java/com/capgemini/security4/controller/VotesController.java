@@ -77,7 +77,7 @@ public class VotesController {
 		}
 
 		// Retrieve candidate and election entities
-		Candidates candidate = candidatesService.getCandidatesById(voteRequestDto.getCandidateId());
+		Candidates candidate = candidatesService.getCandidateEntityById(voteRequestDto.getCandidateId());
 		Elections election = electionsService.getElectionById(voteRequestDto.getElectionId());
 
 		if (candidate == null || election == null) {

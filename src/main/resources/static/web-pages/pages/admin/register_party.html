@@ -11,10 +11,20 @@
         <input type="text" class="form-control" id="partyStatus" required />
         <div class="invalid-feedback">At least 5 characters required.</div>
     </div>
-    <div class="mb-3" id="partySymbolUploadSection">
-        <label for="partySymbol" class="form-label">Party Symbol Image</label>
-        <input type="file" class="form-control" id="partySymbol" name="partySymbol" required>
+    <input type="hidden" id="editMode" value="false">
+    <div class="mb-3" id="partyLogoUploadSection">
+        <label for="partyLogo" class="form-label">Party Logo Image</label>
+        <input type="file" class="form-control" id="partyLogo" name="partyLogo" required>
     </div>
+    <div class="mb-3 d-none" id="currentLogoSection">
+    <label class="form-label">Party Logo</label>
+    <div class="card" style="width: 200px;">
+      <img src="" class="card-img-top" id="currentPosterImage" alt="Current Poster">
+      <div class="card-body">
+        <p class="card-text text-muted small">Poster cannot be updated</p>
+      </div>
+    </div>
+  </div>
     <button type="submit" class="btn btn-success" id="submitBtn">
         Add party
     </button>
@@ -23,8 +33,10 @@
 <table class="table table-bordered table-striped">
     <thead class="table-secondary">
         <tr>
+            <th>ID</th>
             <th>Name <i class="bi bi-arrow-down-up"></i></th>
             <th>Status <i class="bi bi-arrow-down-up"></i></th>
+            <th>Logo</th>
             <th>Actions</th>
         </tr>
     </thead>

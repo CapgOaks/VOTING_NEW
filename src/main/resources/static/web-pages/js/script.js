@@ -85,3 +85,10 @@ function logout() {
     localStorage.clear();
     window.location.href = "login.html";
 }
+
+window.loadPage = loadPage;
+window.getUserId = getUserId;
+window.getUserName = getUserName;
+window.getUserEmail = getUserEmail;
+window.getUserType = getUserType;
+window.logout = logout;
