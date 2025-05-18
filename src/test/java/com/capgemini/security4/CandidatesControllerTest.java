@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.capgemini.security4.controller.CandidatesController;
+import com.capgemini.security4.dto.CandidatesDto;
 import com.capgemini.security4.entity.*;
 import com.capgemini.security4.security.*;
 import com.capgemini.security4.service.CandidatesService;
@@ -77,7 +78,7 @@ class CandidatesControllerTest {
     @Test
     @DisplayName("POST /api/candidates - Success")
     void shouldCreateCandidate() throws Exception {
-        when(candidatesService.createCandidates(any(Candidates.class))).thenReturn(candidate);
+        when(candidatesService.createCandidates(any(CandidatesDto.class))).thenReturn(candidate);
 
         String requestBody = """
             {

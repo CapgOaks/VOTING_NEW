@@ -2,14 +2,15 @@ package com.capgemini.security4.service;
 
 import java.util.List;
 
+import com.capgemini.security4.dto.CandidatesDto;
 import com.capgemini.security4.entity.Candidates;
 
 public interface CandidatesService {
-	List<Candidates> getAllCandidates();
-	Candidates getCandidatesById(Long candidateId);
-	Candidates createCandidates(Candidates candidates);
+	List<CandidatesDto> getAllCandidates();
+	CandidatesDto getCandidatesById(Long candidateId);
+	CandidatesDto createCandidates(CandidatesDto candidatesDto);
 
-	Candidates updateCandidates(Long candidateId, Candidates candidates);
+	CandidatesDto updateCandidates(Long candidateId, CandidatesDto candidatesDto);
 
 	void deleteCandidates(Long candidateId);
 }

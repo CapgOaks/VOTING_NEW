@@ -15,11 +15,7 @@ const partyLogoUploadSection = document.getElementById(
   "partyLogoUploadSection"
 );
 const editModeElem = document.getElementById("editMode");
-const jsonBody = {
-  partyName: partyNameInput.value.trim(),
-  partyStatus: partyStatusInput.value.trim(),
-  // skip logo if you're not handling it via JSON
-};
+
 
 let editId = null;
 let allParties = [];
@@ -27,11 +23,12 @@ let sortDirection = 1;
 
 function createFormData() {
   const formData = new FormData();
+  const isEdit = !!editId;
 
   formData.append("partyName", partyNameInput.value.trim());
   formData.append("partyStatus", partyStatusInput.value.trim());
 
-  if (partyLogoInput.files.length > 0) {
+  if (!isEdit&&partyLogoInput.files[0]) {
     formData.append("partyLogo", partyLogoInput.files[0]);
   }
 
@@ -114,11 +111,12 @@ form.addEventListener("submit", async (e) => {
       const response = await fetch(`${apiUrl}/${editId}`, {
         method: "PUT",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${getToken()}`,
         },
         body: JSON.stringify({
-          partyName: partyNameInput,
-          partyStatus: partyStatusInput,
+          partyName: partyNameInput.value.trim(),
+          partyStatus: partyStatusInput.value.trim(),
           // Exclude file
         }),
       });
