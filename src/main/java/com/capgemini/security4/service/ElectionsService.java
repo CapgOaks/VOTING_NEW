@@ -12,6 +12,6 @@ public interface ElectionsService {
 	void deleteElection(Long id);
 	List<Elections> getElectionsByStatus(Boolean status);
 
-	
+	List<Elections> getUpcomingElections();
 }
 

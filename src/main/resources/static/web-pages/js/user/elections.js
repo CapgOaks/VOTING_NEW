@@ -5,16 +5,6 @@ const electionsList = document.getElementById("electionsList");
 
 async function loadElections() {
   try {
-   /* const response = await fetch('/api/elections', {
-      headers: {
-        'Authorization': getAuthorization()
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch elections');
-    }*/
-
     const elections = await api.get('elections');
 	console.log(elections);
 
