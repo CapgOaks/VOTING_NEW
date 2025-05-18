@@ -34,17 +34,13 @@ public class Candidates {
 	@Column(name = "election_id")
 	private Long electionId;
 
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name = "party_id", referencedColumnName = "party_id", insertable
-	 * = false, updatable = false) private Party party;
-	 * 
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable =
-	 * false, updatable = false) private Users user;
-	 */
+	@ManyToOne
+	@JoinColumn(name = "party_id", referencedColumnName = "party_id", insertable = false, updatable = false)
+	private Party party;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+	private Users user;
 
 	@Size(max = 1000, message = "Manifesto must be less than 1000 characters")
 	@Column(name = "manifesto", nullable = true)
@@ -59,17 +55,18 @@ public class Candidates {
 		this.manifesto = manifesto;
 	}
 
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name = "election_id", referencedColumnName = "election_id",
-	 * insertable = false, updatable = false) private Elections election;
-	 * 
-	 * public void setUserId(Long userId) { this.userId = userId; }
-	 * 
-	 * public void setPartyId(Long partyId) { this.partyId = partyId; }
-	 * 
-	 * public void setElectionId(Long electionId) { this.electionId = electionId; }
-	 */
+	
+	  @ManyToOne
+	  @JoinColumn(name = "election_id", referencedColumnName = "election_id",
+	  insertable = false, updatable = false) private Elections election;
+	  
+		/*
+		 * public void setUserId(Long userId) { this.userId = userId; }
+		 * 
+		 * public void setPartyId(Long partyId) { this.partyId = partyId; }
+		 * 
+		 * public void setElectionId(Long electionId) { this.electionId = electionId; }
+		 */
+	 
 
 }
