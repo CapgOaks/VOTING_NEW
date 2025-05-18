@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.security4.dto.CandidateDto;
 import com.capgemini.security4.dto.CandidatesDto;
+import com.capgemini.security4.dto.RunningCandidateDto;
 import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.exception.CandidateNotFound;
 import com.capgemini.security4.exception.ElectionNotFoundException;
@@ -48,7 +50,13 @@ public class CandidatesServiceImpl implements CandidatesService {
             .orElseThrow(() -> new CandidateNotFound("Candidate not found with ID: " + id));
         return convertToDto(entity);
     }
-
+    
+    @Override
+    public Candidates getCandidateEntityById(Long id) {
+        return candidatesRepo.findById(id)
+            .orElseThrow(() -> new CandidateNotFound("Candidate not found with ID: " + id));
+    }
+    
     @Override
     public CandidatesDto createCandidates(CandidatesDto dto) {
     	userRepo.findById(dto.getUserId())
@@ -114,4 +122,14 @@ public class CandidatesServiceImpl implements CandidatesService {
         if (dto.getElectionId() != null) entity.setElectionId(dto.getElectionId());
         if (dto.getManifesto() != null) entity.setManifesto(dto.getManifesto());
     }
+	@Override
+	public List<CandidateDto> getCandidatesByElectionId(Long electionId) {
+		// TODO Auto-generated method stub
+		return candidatesRepo.findCandidateDtosByElectionId(electionId);
+	}
+	@Override
+	public List<RunningCandidateDto> getRunningCandidates() {
+		// TODO Auto-generated method stub
+		return candidatesRepo.findRunningCandidates("active");
+	}
 }

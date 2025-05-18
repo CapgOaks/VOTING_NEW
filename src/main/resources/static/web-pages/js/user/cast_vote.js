@@ -1,120 +1,115 @@
-// Utility function to fetch data with authorization
-async function fetchData(url) {
-    const response = await fetch(url, {
-        headers: {
-            'Authorization': getAuthorization()
-        }
-    });
-    if (!response.ok) {
-        throw new Error(`Failed to fetch data from ${url}`);
-    }
-    return response.json();
-}
+// vote_page.js (updated)
+import { getStoredPayload } from "../utils/jwtUtils.js";
+import { api } from "../services/api.js";
+import config from "../config/config.js";
 
 async function displayVoteCards() {
+  const voteCards = document.getElementById("voteCards");
+  const voteMessage = document.getElementById("voteMessage");
+  const electionDd = document.getElementById("electionDropdown");
+
+  // extract userId from JWT payload
+  const payload = getStoredPayload();
+  const userId = payload?.userid || payload?.sub;
+  if (!userId) {
+    voteCards.innerHTML = `<p class="text-danger">User not authenticated.</p>`;
+    return;
+  }
+
+  // 1️⃣ Load elections
+  try {
+    const elections = await api.get("elections/status?status=true");
+    electionDd.innerHTML =
+      `<option disabled selected>Select Election</option>` +
+      elections.map(
+        (e) => `<option value="${e.electionId}">${e.title}</option>`
+      ).join("");
+  } catch (err) {
+    voteCards.innerHTML = `<p class="text-danger">Cannot load elections.</p>`;
+    return;
+  }
+
+  // 2️⃣ On election change, fetch candidates + vote status
+  electionDd.addEventListener("change", async () => {
+    voteCards.innerHTML = "";
+    voteMessage.textContent = "";
+    const electionId = electionDd.value;
+
+    let candidates, hasVoted;
     try {
-        const voteCards = document.getElementById("voteCards");
-        const voteMessage = document.getElementById("voteMessage");
-        const userId = getUserId();
-        console.log(userId);
-
-        const parties = await fetchData('/api/parties');
-
-        if (parties.length === 0) {
-            voteCards.innerHTML = "<p>No parties found.</p>";
-            return;
-        }
-
-        const candidates = await fetchData('/api/candidates');
-        const hasVoted = await fetchData(`/api/votes/user/${userId}`);
-
-        parties.forEach(party => {
-            const partyCandidates = candidates.filter(c => c.party && c.party.partyId === party.partyId);
-
-            partyCandidates.forEach(candidate => {
-                const col = document.createElement("div");
-                col.classList.add("col");
-
-                const card = document.createElement("div");
-                card.classList.add("card", "h-100");
-
-                const img = document.createElement("img");
-                img.src = `/api/parties/logo/${party.partyLogo}`;
-                img.classList.add("card-img-top");
-                img.alt = party.partyName;
-
-                const cardBody = document.createElement("div");
-                cardBody.classList.add("card-body");
-
-                const title = document.createElement("h5");
-                title.classList.add("card-title");
-                title.textContent = party.partyName;
-
-                const candidateName = document.createElement("p");
-                candidateName.classList.add("card-text");
-                candidateName.textContent = `Candidate: ${candidate.candidateName}`;
-
-                const voteBtn = document.createElement("button");
-                voteBtn.classList.add("btn", "btn-primary");
-
-                if (hasVoted) {
-                    voteBtn.textContent = "Already Voted";
-                    voteBtn.disabled = true;
-                } else {
-                    voteBtn.textContent = "Vote";
-
-                    voteBtn.addEventListener("click", async function () {
-                        if (voteBtn.disabled) return;
-
-                        const voteData = {
-                            candidate: { candidateId: candidate.candidateId },
-                            election: { electionId: candidate.election ? candidate.election.electionId : null }
-                        };
-
-                        try {
-                            const response = await fetch(`/api/votes/user/${userId}`, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "Authorization": getAuthorization()
-                                },
-                                body: JSON.stringify(voteData)
-                            });
-
-                            if (!response.ok) {
-                                throw new Error("Failed to cast vote.");
-                            }
-
-                            const data = await response.json();
-                            voteMessage.textContent = "Vote cast successfully!";
-                            voteMessage.classList.add("text-success");
-                            voteBtn.textContent = "Already Voted";
-                            voteBtn.disabled = true;
-                        } catch (error) {
-                            voteMessage.textContent = error.message;
-                            voteMessage.classList.add("text-danger");
-                        }
-                    });
-                }
-
-                cardBody.appendChild(title);
-                cardBody.appendChild(candidateName);
-                cardBody.appendChild(voteBtn);
-
-                card.appendChild(img);
-                card.appendChild(cardBody);
-
-                col.appendChild(card);
-                voteCards.appendChild(col);
-            });
-        });
-    } catch (error) {
-        const voteCards = document.getElementById("voteCards");
-        voteCards.innerHTML = "<p class='text-danger'>Failed to load parties and candidates.</p>";
-        console.error(error);
+      [candidates, hasVoted] = await Promise.all([
+        api.get(`candidates/election/${electionId}`),
+        api.get(`votes/user/${userId}`)
+      ]);
+    } catch (err) {
+      voteCards.innerHTML =
+        `<p class="text-danger">Failed to load candidates or vote status.</p>`;
+      return;
     }
+
+    if (!candidates.length) {
+      voteCards.innerHTML = `<p>No candidates found.</p>`;
+      return;
+    }
+
+    // 3️⃣ Render cards
+    candidates.forEach((c) => {
+      const col = document.createElement("div");
+      col.className = "col";
+
+      col.innerHTML = `
+        <div class="card card-custom h-100 text-center">
+          <div class="pt-4">
+            <img
+              src="${config.API_BASE_URL}/parties/logo/${c.partyLogo}"
+              alt="${c.partyName} logo"
+              class="logo-circle rounded-circle mx-auto d-block"
+            />
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-1">${c.candidateName}</h5>
+            <h6 class="card-subtitle mb-3 text-muted">${c.partyName}</h6>
+            <p class="card-text flex-grow-1">
+              ${c.manifesto || "No manifesto provided."}
+            </p>
+            <button class="btn btn-primary vote-btn mt-3" ${hasVoted ? "disabled" : ""}>
+              ${hasVoted ? "Already Voted" : "Vote"}
+            </button>
+          </div>
+        </div>
+      `;
+
+
+
+      const btn = col.querySelector(".vote-btn");
+      if (!hasVoted) {
+        btn.addEventListener("click", async () => {
+          const payload = {
+            candidateId: c.candidateId,
+            electionId
+          };
+          try {
+            await api.post(`votes`, payload);
+            voteMessage.textContent = "Vote cast successfully!";
+            voteMessage.className = "text-success";
+
+            voteCards.querySelectorAll('.vote-btn').forEach((button) => {
+              button.disabled = true;
+              button.textContent = "Already Voted";
+            });
+            
+          } catch {
+            voteMessage.textContent = "Failed to cast vote.";
+            voteMessage.className = "text-danger";
+          }
+        });
+      }
+
+      voteCards.appendChild(col);
+    });
+  });
 }
 
 export function init() {
-    displayVoteCards();
+  displayVoteCards();
 }

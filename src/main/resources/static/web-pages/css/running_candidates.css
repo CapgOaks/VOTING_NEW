@@ -1,0 +1,102 @@
+/* Styles for running candidates cards */
+
+#candidatesContainer {
+  padding: 30px 15px;
+  width: 100%;
+  background: transparent;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+h2.mb-4 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #444;
+  text-align: center;
+  margin: 20px 0 40px 0;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+h2.mb-4:hover {
+  color: #666;
+  cursor: default;
+}
+
+#candidatesContainer .card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  color: white;
+  padding: 0;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  border: none;
+}
+
+#candidatesContainer .card:hover {
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  transform: translateY(-8px) scale(1.03);
+}
+
+#candidatesContainer .card-img-top {
+  max-height: 150px;
+  object-fit: contain;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.15);
+  padding: 10px;
+}
+
+#candidatesContainer .card-body {
+  padding: 20px 25px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  color: #f0f0f0;
+}
+
+#candidatesContainer .card-title {
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+#candidatesContainer .card-subtitle {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #e0e0e0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+  font-style: italic;
+}
+
+#candidatesContainer .card-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #fff9c4;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.2);
+  padding: 10px 15px;
+  border-radius: 8px;
+  max-height: 6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+  
+/* Different bright background colors for cards based on parent col-md-4 div */
+#candidatesContainer > div.col-md-4:nth-child(3n+1) .card {
+  background-color: #3399ff; /* Bright Blue */
+}
+
+#candidatesContainer > div.col-md-4:nth-child(3n+2) .card {
+  background-color: #33cc66; /* Bright Green */
+}
+
+#candidatesContainer > div.col-md-4:nth-child(3n+3) .card {
+  background-color: #33cccc; /* Bright Teal */
+}

@@ -59,14 +59,6 @@ public class Candidates {
 	  @ManyToOne
 	  @JoinColumn(name = "election_id", referencedColumnName = "election_id",
 	  insertable = false, updatable = false) private Elections election;
-	  
-		/*
-		 * public void setUserId(Long userId) { this.userId = userId; }
-		 * 
-		 * public void setPartyId(Long partyId) { this.partyId = partyId; }
-		 * 
-		 * public void setElectionId(Long electionId) { this.electionId = electionId; }
-		 */
 	 
 
 }
