@@ -33,7 +33,6 @@ public class CandidatesController {
         this.candidatesService = candidatesService;
     }
 
-    // GET all candidates
     @GetMapping
     public ResponseEntity<List<CandidatesDto>> getAllCandidates() {
         List<CandidatesDto> dtos = candidatesService.getAllCandidates();
