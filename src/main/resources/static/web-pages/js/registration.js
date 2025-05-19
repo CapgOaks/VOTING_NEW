@@ -1,4 +1,5 @@
-const apiUrl = "http://localhost:8080/auth/register";  // URL to your backend endpoint
+const apiUrl = "http://localhost:8080/auth/register";
+
 const form = document.getElementById("registrationForm");
 
 const userNameInput = document.getElementById("userName");
@@ -9,33 +10,33 @@ const dobInput = document.getElementById("dob");
 const roleInput = document.getElementById("role");
 
 form.addEventListener("submit", async function (e) {
-    e.preventDefault();  // Prevent form submission to handle it with JavaScript
+    e.preventDefault();
 
-    const userData = buildUserPayload();
-    
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json",
-				
-			 },
-			
-            body: JSON.stringify(userData)
-        });
+    // Reset validation classes
+    form.classList.remove('was-validated');
 
-        if (response.ok) {
-            form.reset();
-            window.location.href = "login.html"; // Redirect to login page
-        } else {
-            alert("Something went wrong while submitting the form.");
-        }
-    } catch (error) {
-        console.error("Error during form submission:", error);
-        alert("There was an issue connecting to the server.");
+    // Custom validation: Date of birth must be in the past
+    const dob = new Date(dobInput.value);
+    const today = new Date();
+    if (dob >= today) {
+        dobInput.setCustomValidity("Date of birth must be in the past.");
+    } else {
+        dobInput.setCustomValidity("");
     }
-});
 
-function buildUserPayload() {
+    // Passwords must match
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        confirmPasswordInput.setCustomValidity("Passwords do not match.");
+    } else {
+        confirmPasswordInput.setCustomValidity("");
+    }
+
+    // Trigger built-in validation
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+    }
+
     const userData = {
         userName: userNameInput.value.trim(),
         userEmail: userEmailInput.value.trim(),
@@ -44,5 +45,25 @@ function buildUserPayload() {
         role: "user"
     };
 
-    return userData;
-}
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+            alert("Registration successful!");
+            form.reset();
+            window.location.href = "login.html";
+        } else {
+            const errorText = await response.text();
+            alert("Registration failed: " + errorText);
+        }
+    } catch (error) {
+        console.error("Submission error:", error);
+        alert("Could not connect to the server. Please try again.");
+    }
+});

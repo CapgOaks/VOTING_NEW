@@ -19,9 +19,9 @@ function verify() {
 			if (response.status === 200) {
 				return response.json();
 			} else if (response.status === 404) {
-				document.getElementById("error").textContent = "404 Not Found - Users data not available.";
+				document.getElementById("error").textContent = "Please enter valid credentials.";
 			} else if (response.status === 401) {
-				document.getElementById("error").textContent = "401 Unauthorized - Invalid token or access denied.";
+				document.getElementById("error").textContent = "Not Authorized.";
 			} else if (response.status === 500) {
 				document.getElementById("error").textContent = "500 Internal Server Error.";
 			} else {
