@@ -15,7 +15,7 @@ document.querySelectorAll(".nav-link[data-page]").forEach((link) => {
 document.addEventListener("DOMContentLoaded", async () => {
     const dashBoardDto = await api.get('admin/dashboard-stats');
 
-    console.log(dashBoardDto);
+    //console.log(dashBoardDto);
 
 
     const totalCandidates = document.getElementById("total-candidates");

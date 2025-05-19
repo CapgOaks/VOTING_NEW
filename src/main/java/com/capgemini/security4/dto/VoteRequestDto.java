@@ -9,7 +9,7 @@ public class VoteRequestDto {
 	@NotNull(message = "Election is required")
 	private Long electionId;
 
-	// no userId – it comes from SecurityUtils
+	
 	public VoteRequestDto() {
 		// TODO Auto-generated constructor stub
 	}

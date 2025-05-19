@@ -3,6 +3,7 @@ package com.capgemini.security4.repository;
 import com.capgemini.security4.entity.Votes;
 import com.capgemini.security4.entity.Users;
 
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,5 +33,30 @@ public interface VotesRepository extends JpaRepository<Votes, Long> {
 			 LIMIT 1
 			""", nativeQuery = true)
 	WinnerProjection findTopCandidateIdAndVotes(@Param("electionId") Long electionId);
+	
+	@Query("SELECT v.candidate, COUNT(v) FROM Votes v WHERE v.election.electionId = :electionId GROUP BY v.candidate")
+	List<Object[]> countVotesByCandidateInElection(@Param("electionId") Long electionId);
+
+	@Query("SELECT COUNT(v) FROM Votes v WHERE v.election.electionId = :electionId")
+	Long countTotalVotesInElection(@Param("electionId") Long electionId);
+	
+	
+
+
+	interface VotersCountProjection {
+		Long getElectionId();
+		String getElectionName();
+		Long getVotersCount();
+	}
+
+	@Query(value = """
+			SELECT e.election_id AS electionId,
+			       e.title AS electionName,
+			       COUNT(v.vote_id) AS votersCount
+			  FROM elections e
+			  LEFT JOIN votes v ON e.election_id = v.election_id
+			 GROUP BY e.election_id, e.title
+			""", nativeQuery = true)
+	java.util.List<VotersCountProjection> findVotersCountPerElection();
 
 }
