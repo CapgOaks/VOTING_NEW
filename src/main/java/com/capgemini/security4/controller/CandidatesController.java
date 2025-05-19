@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.security4.dto.CandidatesDto;
 import com.capgemini.security4.dto.CandidateDto;
-import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.service.CandidatesService;
 
 import jakarta.validation.Valid;
