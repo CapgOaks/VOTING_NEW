@@ -178,19 +178,6 @@ export function init() {
     }
   }
 
-//   async function deleteCandidate(id) {
-//     if (!confirm("Are you sure you want to delete this candidate?")) return;
-
-//     try {
-//       await api.delete(`candidates/${id}`);
-//       showSuccess("Candidate deleted successfully");
-//       await fetchAndRenderCandidates();
-//     } catch (err) {
-//       console.error("Delete error", err);
-//       showError("Failed to delete candidate");
-//     }
-//   }
-
   function clearForm() {
     form.reset();
     editId = null;

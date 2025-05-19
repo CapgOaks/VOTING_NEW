@@ -42,7 +42,7 @@ async function displayElectionResults() {
       const tableHeader = `
         <thead class="table-dark">
           <tr>
-            <th>Candidate Name</th>
+            <th>Candidate Id</th>
             <th>Party Name</th>
             <th>Votes</th>
             <th>Percentage</th>
@@ -53,7 +53,7 @@ async function displayElectionResults() {
             .map(
               (r) => `
             <tr>
-              <td>${r.userName}</td>
+              <td>${r.candidateId}</td>
               <td>${r.partyName}</td>
               <td>${r.voteCount}</td>
               <td>${r.percentage}%</td>
