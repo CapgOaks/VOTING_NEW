@@ -51,7 +51,7 @@ public class ElectionsController {
 		return ResponseEntity.status(HttpStatus.OK).body(election);
 	}
 
-	@GetMapping("/status")
+	@GetMapping("/by-status")
 	public ResponseEntity<List<Elections>> getElectionsByStatus(@RequestParam Boolean status) {
 		log.info("Fetching elections with status: {}", status);
 		List<Elections> elections = electionsService.getElectionsByStatus(status);

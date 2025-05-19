@@ -37,12 +37,19 @@ import com.capgemini.security4.security.CustomUserDetailsService;
 import com.capgemini.security4.security.JwtUtils;
 import com.capgemini.security4.service.PartyService;
 
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
 @WebMvcTest(PartyController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class PartyControllerTest {
+    private final MockMvc mockMvc;
+    private final PartyService partyService;
+
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private PartyService partyService;
+    public PartyControllerTest(MockMvc mockMvc, PartyService partyService) {
+        this.mockMvc = mockMvc;
+        this.partyService = partyService;
+    }
 
     private Party party1, party2;
 
@@ -151,8 +158,7 @@ class PartyControllerTest {
             }
         };
 
-        // Ideally, mock the service to return this resource if you have such endpoint logic.
-        // For now this test expects NOT_FOUND as in original.
+        
         mockMvc.perform(get("/api/parties/logo/logo1.png")).andExpect(status().isNotFound());
     }
 
