@@ -31,7 +31,7 @@ async function displayElectionResults() {
 
     try {
       const results = await api.get(`votes/election/${electionId}`);
-
+	console.log(results);
       if (!results.length) {
         resultsContainer.innerHTML =
           `<p class="text-warning">No results found for this election.</p>`;

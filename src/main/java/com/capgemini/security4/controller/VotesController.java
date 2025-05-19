@@ -21,6 +21,7 @@ import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.entity.Elections;
 import com.capgemini.security4.entity.Users;
 import com.capgemini.security4.entity.Votes;
+import com.capgemini.security4.exception.UserNotFoundException;
 import com.capgemini.security4.security.SecurityUtils;
 import com.capgemini.security4.service.CandidatesService;
 import com.capgemini.security4.service.CandidatesServiceImpl;
@@ -55,6 +56,9 @@ public class VotesController {
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<Boolean> checkUserVoteStatus(@PathVariable Long userId) {
 		log.info("Checking vote status for user with ID: {}", userId);
+		 if (!userService.existsByUserId(userId)) {
+		        throw new UserNotFoundException("User with ID " + userId + " not found");
+		    }
 
 		boolean hasVoted = votesService.hasUserVoted(userId);
 

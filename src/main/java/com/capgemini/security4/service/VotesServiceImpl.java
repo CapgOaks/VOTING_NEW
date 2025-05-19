@@ -4,6 +4,8 @@ package com.capgemini.security4.service;
 
 import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.entity.Votes;
+import com.capgemini.security4.exception.UserNotFoundException;
+import com.capgemini.security4.repository.UserRepository;
 import com.capgemini.security4.repository.VotesRepository;
 
 
@@ -21,15 +23,20 @@ import java.util.Map;
 @Service
 public class VotesServiceImpl implements VotesService {
 
-    private VotesRepository votesRepository;
+	 private final UserRepository userRepository;
+	private VotesRepository votesRepository;
     
     @Autowired
-    public VotesServiceImpl(VotesRepository votesRepository) {
+    public VotesServiceImpl(VotesRepository votesRepository, UserRepository userRepository) {
         this.votesRepository = votesRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public boolean hasUserVoted(Long userId) {
+    	if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException("User with ID " + userId + " not found.");
+        }
         return votesRepository.existsByUser_UserId(userId);
     }
 
