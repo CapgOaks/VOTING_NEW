@@ -103,12 +103,6 @@ public class ElectionsController {
 		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteElection(@PathVariable Long id) {
-		log.info("Deleting election with ID: {}", id);
-		electionsService.deleteElection(id);
-		log.info("Election deleted successfully");
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
+	
 
 }

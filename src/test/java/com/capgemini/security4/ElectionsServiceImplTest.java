@@ -123,25 +123,6 @@ class ElectionsServiceImplTest {
         }
     }
 
-    @Nested
-    @DisplayName("Delete Election Tests")
-    class DeleteTests {
-        @Test
-        @DisplayName("Should delete election by ID")
-        void testDeleteElection() {
-            when(electionsRepository.existsById(1L)).thenReturn(true);
-            doNothing().when(electionsRepository).deleteById(1L);
-            electionsService.deleteElection(1L);
-            verify(electionsRepository, times(1)).deleteById(1L);
-        }
-
-        @Test
-        @DisplayName("Should throw exception if election not found during delete")
-        void testDeleteElection_NotFound() {
-            when(electionsRepository.existsById(99L)).thenReturn(false);
-            assertThrows(ElectionNotFoundException.class, () -> electionsService.deleteElection(99L));
-        }
-    }
 
     @Nested
     @DisplayName("Status Filter Tests")

@@ -27,6 +27,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleElectionNotFoundException(ElectionNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
+	
+	@ExceptionHandler(ElectionAlreadyExistException.class)
+	public ResponseEntity<String> handleElectionAlreadyExistException(ElectionAlreadyExistException ex) {
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	}
 
 	@ExceptionHandler(PartyAlreadyExistsException.class)
 	public ResponseEntity<String> handlePartyAlreadyExistsException(PartyAlreadyExistsException ex) {

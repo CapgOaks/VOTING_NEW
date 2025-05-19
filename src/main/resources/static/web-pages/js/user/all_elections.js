@@ -64,7 +64,7 @@ async function loadAllElections() {
 			row.innerHTML = `
         <td>${election.electionId}</td>
         <td>${election.title}</td>
-        <td>${election.status ? "Active" : "Inactive"}</td>
+        <td>${election.electionStatus ? "Active" : "Inactive"}</td>
         <td>${daysLeft}</td>
        
       `;
