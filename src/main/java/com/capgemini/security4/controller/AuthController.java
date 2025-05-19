@@ -96,7 +96,7 @@ public class AuthController {
 		user.setUserEmail(userDto.getUserEmail());
 		user.setRole(userDto.getRole());
 		user.setDob(userDto.getDob());
-		user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
+		user.setPasswordHash(userDto.getPassword());
 
 		Users savedUser = userService.createUser(user);
 		log.info("User registered successfully: {}", savedUser.getUserName());

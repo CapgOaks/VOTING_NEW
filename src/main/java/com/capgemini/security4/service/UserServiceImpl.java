@@ -21,6 +21,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Users createUser(Users user) {
 		user.setCreatedAt(LocalDate.now());
+		// Encode password before saving
+		user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
 		return userRepository.save(user);
 	}
 
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Users findByUserNameOrUserEmail(String userName, String email) {
-		
+
 		Optional<Users> optUser = userRepository.findByUserNameOrUserEmail(userName, email);
 		if (optUser.isPresent()) {
 			return optUser.get();

@@ -5,7 +5,7 @@ package com.capgemini.security4.service;
 import com.capgemini.security4.entity.Candidates;
 import com.capgemini.security4.entity.Votes;
 import com.capgemini.security4.repository.VotesRepository;
-import com.capgemini.security4.service.VotesService;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
