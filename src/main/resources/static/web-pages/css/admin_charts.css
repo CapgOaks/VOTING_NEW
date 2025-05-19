@@ -1,0 +1,39 @@
+.charts-container {
+    width: 100%;
+    max-width: 1200px;
+    max-height: 600px;
+    margin: 40px auto;
+    padding: 30px 40px;
+    overflow: auto;
+    
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(37, 117, 252, 0.4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.charts-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 2rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+#title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: rgb(255, 99, 132);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(255, 99, 132, 0.1);
+
+}

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.security4.entity.Elections;
 import com.capgemini.security4.service.ElectionsService;
+import com.capgemini.security4.dto.VotersCountDto;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class ElectionsController {
 		return ResponseEntity.status(HttpStatus.OK).body(election);
 	}
 
-	@GetMapping("/status")
+	@GetMapping("/by-status")
 	public ResponseEntity<List<Elections>> getElectionsByStatus(@RequestParam Boolean status) {
 		log.info("Fetching elections with status: {}", status);
 		List<Elections> elections = electionsService.getElectionsByStatus(status);
@@ -64,6 +65,14 @@ public class ElectionsController {
 		List<Elections> elections = electionsService.getUpcomingElections();
 		log.info("Found {} upcoming elections", elections.size());
 		return ResponseEntity.status(HttpStatus.OK).body(elections);
+	}
+
+	@GetMapping("/voters-count")
+	public ResponseEntity<List<VotersCountDto>> getVotersCountPerElection() {
+		log.info("Fetching voters count per election");
+		List<VotersCountDto> votersCount = electionsService.getVotersCountPerElection();
+		log.info("Found voters count data for {} elections", votersCount.size());
+		return ResponseEntity.status(HttpStatus.OK).body(votersCount);
 	}
 
 	@PostMapping
@@ -94,12 +103,6 @@ public class ElectionsController {
 		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteElection(@PathVariable Long id) {
-		log.info("Deleting election with ID: {}", id);
-		electionsService.deleteElection(id);
-		log.info("Election deleted successfully");
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
+	
 
 }

@@ -15,4 +15,6 @@ export function init() {
     document.getElementById('adminEmail').textContent = adminData.email;
     document.getElementById('adminName').textContent = adminData.username;
     document.getElementById('adminRole').textContent = adminData.role;
+
 }
+

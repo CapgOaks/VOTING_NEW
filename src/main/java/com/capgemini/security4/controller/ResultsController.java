@@ -4,13 +4,11 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.capgemini.security4.entity.Results;
 import com.capgemini.security4.service.ResultsServiceImpl;
 
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -41,21 +39,14 @@ public class ResultsController {
 	}
 
 	@PostMapping("/declare/{electionId}")
-	public ResponseEntity<Results> declareResult(@PathVariable Long electionId,
-			@Valid @RequestBody(required = false) Results resultRequest, BindingResult bindingResult) {
+	public ResponseEntity<Results> declareResult(@PathVariable Long electionId) {
 
 		log.info("POST /api/results/declare/{} - Declaring result for election", electionId);
-
-		// Validate if request body is provided (remove if not needed)
-		if (resultRequest != null && bindingResult.hasErrors()) {
-			log.warn("Validation errors in result declaration: {}", bindingResult.getFieldErrors());
-			throw new IllegalArgumentException(bindingResult.getFieldErrors().toString());
-		}
 
 		Results declaredResult = resultsService.declareResult(electionId);
 
 		log.info("Result successfully declared for election {}: {}", electionId, declaredResult);
 		return ResponseEntity.status(HttpStatus.CREATED).body(declaredResult);
 	}
-   
+
 }

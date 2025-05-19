@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -27,52 +28,38 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.mockito.Mockito;
 
-@SpringBootTest
+@WebMvcTest(CandidatesController.class)
 @AutoConfigureMockMvc(addFilters = false)
-@Import(CandidatesControllerTest.MockConfig.class)
 class CandidatesControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
+	private MockMvc mockMvc;
     private CandidatesService candidatesService;
-
-    private Candidates candidate;
-    private Users user;
-    private Party party;
-    private Elections election;
+    private CandidatesDto candidate;
+    @Autowired
+    public CandidatesControllerTest(MockMvc mockMvc, CandidatesService candidatesService) {
+        this.mockMvc = mockMvc;
+        this.candidatesService = candidatesService;
+    }
 
     @BeforeEach
     void setUp() {
-        user = new Users();
-        user.setUserId(2L);
-
-        party = new Party();
-        party.setPartyId(1L);
-
-        election = new Elections();
-        election.setElectionId(2L);
-
-        candidate = new Candidates();
-        candidate.setCandidateId(1L);
-        candidate.setManifesto("Test Manifesto");
-        candidate.setUser(user);
-        candidate.setParty(party);
-        candidate.setElection(election);
+        candidate = new CandidatesDto(1L, 2L, 1L, 2L, "Test Manifesto");
+        
+        when(candidatesService.getAllCandidates())
+            .thenReturn(List.of(candidate));
+            
+        when(candidatesService.getCandidatesById(1L))
+            .thenReturn(candidate);
     }
 
     @Test
     @DisplayName("GET /api/candidates - Success")
     void shouldGetAllCandidates() throws Exception {
-        List<Candidates> candidates = Arrays.asList(candidate);
-        when(candidatesService.getAllCandidates()).thenReturn(candidates);
 
         mockMvc.perform(get("/api/candidates"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$[0].candidateId").value(1))
-               .andExpect(jsonPath("$[0].manifesto").value("Test Manifesto"))
-               .andDo(print());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].candidateId").value(1))
+        .andExpect(jsonPath("$[0].userId").value(2))
+        .andDo(print());
     }
 
     @Test
@@ -83,9 +70,9 @@ class CandidatesControllerTest {
         String requestBody = """
             {
                 "manifesto": "Test Manifesto",
-                "user": { "userId": 2 },
-                "party": { "partyId": 1 },
-                "election": { "electionId": 2 }
+                "userId": 2,
+                "partyId": 1,
+                "electionId": 2
             }
         """;
 
@@ -94,9 +81,9 @@ class CandidatesControllerTest {
                .content(requestBody))
                .andExpect(status().isCreated())
                .andExpect(jsonPath("$.candidateId").value(1))
-               .andExpect(jsonPath("$.user.userId").value(2))
-               .andExpect(jsonPath("$.party.partyId").value(1))
-               .andExpect(jsonPath("$.election.electionId").value(2))
+               .andExpect(jsonPath("$.userId").value(2))
+               .andExpect(jsonPath("$.partyId").value(1))
+               .andExpect(jsonPath("$.electionId").value(2))
                .andExpect(jsonPath("$.manifesto").value("Test Manifesto"))
                .andDo(print());
     }
@@ -117,14 +104,14 @@ class CandidatesControllerTest {
     @DisplayName("PUT /api/candidates/{id} - Success")
     void shouldUpdateCandidate() throws Exception {
         candidate.setManifesto("Updated Manifesto");
-        when(candidatesService.updateCandidates(eq(1L), any(Candidates.class))).thenReturn(candidate);
+        when(candidatesService.updateCandidates(eq(1L), any(CandidatesDto.class))).thenReturn(candidate);
 
         String requestBody = """
             {
                 "manifesto": "Updated Manifesto",
-                "user": { "userId": 2 },
-                "party": { "partyId": 1 },
-                "election": { "electionId": 2 }
+                "userId": 2 ,
+                "partyId": 1 ,
+                "electionId": 2 
             }
         """;
 

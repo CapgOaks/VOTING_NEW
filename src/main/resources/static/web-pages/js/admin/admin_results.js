@@ -1,7 +1,7 @@
 // results_page.js
 import { api } from "../services/api.js";
 import config from "../config/config.js";
-console.log('result js loaded')
+
 async function displayElectionResults() {
   const electionDropdown = document.getElementById("electionDropdown");
   const resultsContainer = document.getElementById("resultsContainer");
@@ -10,7 +10,6 @@ async function displayElectionResults() {
   // Load elections
   try {
     const elections = await api.get("elections/status?status=true");
-	console.log(elections)
     electionDropdown.innerHTML =
       `<option disabled selected>Select Election</option>` +
       elections
@@ -43,7 +42,7 @@ async function displayElectionResults() {
       const tableHeader = `
         <thead class="table-dark">
           <tr>
-            <th>Candidate Name</th>
+            <th>Candidate Id</th>
             <th>Party Name</th>
             <th>Votes</th>
             <th>Percentage</th>
@@ -54,7 +53,7 @@ async function displayElectionResults() {
             .map(
               (r) => `
             <tr>
-              <td>${r.userName}</td>
+              <td>${r.candidateId}</td>
               <td>${r.partyName}</td>
               <td>${r.voteCount}</td>
               <td>${r.percentage}%</td>
@@ -66,7 +65,6 @@ async function displayElectionResults() {
       `;
       resultsTable.innerHTML = tableHeader;
     } catch (err) {
-		console.error("results.js : ", err)
       resultsContainer.innerHTML =
         `<p class="text-danger">Error loading results.</p>`;
     }

@@ -56,9 +56,6 @@ function renderParties(parties) {
         <button class="btn btn-outline-primary edit-btn" data-id="${
           party.partyId
         }">Edit</button>
-        <button class="btn btn-outline-danger delete-btn" data-id="${
-          party.partyId
-        }">Delete</button>
       </td>
     `;
     tbody.appendChild(row);
@@ -165,12 +162,6 @@ async function loadPartyForEdit(id) {
   partyNameInput.focus();
 }
 
-async function deleteParty(id) {
-  if (!confirm("Are you sure you want to delete this party?")) return;
-
-  await api.delete(`parties/${id}`);
-  fetchAndRenderParties();
-}
 
 function clearForm() {
   form.reset();
@@ -206,3 +197,7 @@ nameHeader.addEventListener("click", () => {
 
 // Initial fetch
 fetchAndRenderParties();
+
+export async function init() {
+  await fetchAndRenderParties();
+}

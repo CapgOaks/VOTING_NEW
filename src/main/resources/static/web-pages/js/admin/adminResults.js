@@ -1,7 +1,7 @@
 // results_page.js
 import { api } from "../services/api.js";
 import config from "../config/config.js";
-console.log('result js loaded')
+
 async function displayElectionResults() {
   const electionDropdown = document.getElementById("electionDropdown");
   const resultsContainer = document.getElementById("resultsContainer");
@@ -9,8 +9,7 @@ async function displayElectionResults() {
 
   // Load elections
   try {
-    const elections = await api.get("elections/status?status=true");
-	console.log(elections)
+    const elections = await api.get("/votes/elections/status?status=true");
     electionDropdown.innerHTML =
       `<option disabled selected>Select Election</option>` +
       elections
@@ -66,7 +65,6 @@ async function displayElectionResults() {
       `;
       resultsTable.innerHTML = tableHeader;
     } catch (err) {
-		console.error("results.js : ", err)
       resultsContainer.innerHTML =
         `<p class="text-danger">Error loading results.</p>`;
     }
