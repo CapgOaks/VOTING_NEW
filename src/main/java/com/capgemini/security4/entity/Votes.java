@@ -19,22 +19,19 @@ public class Votes {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long voteId;
 
-	@NotNull(message = "User is required")
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false, referencedColumnName = "user_id", updatable = false)
 	private Users user;
 
-	@NotNull(message = "Candidate is required")
 	@ManyToOne
 	@JoinColumn(name = "candidate_id", nullable = false, referencedColumnName = "candidate_id", updatable = false)
 	private Candidates candidate;
 
-	@NotNull(message = "Election is required")
 	@ManyToOne
 	@JoinColumn(name = "election_id", nullable = false, referencedColumnName = "election_id", updatable = false)
 	private Elections election;
 
-	@Column(nullable = false)
+	@Column(name="time_stamp" ,nullable = false)
 	private LocalDateTime timeStamp;
 
 	

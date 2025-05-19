@@ -94,12 +94,12 @@ class PartyServiceImplTest {
 		existing.setPartyId(1L);
 		existing.setPartyName("Old");
 		existing.setPartyStatus("Inactive");
-		existing.setPartyLogo("old.png");
+		
 
 		Party updated = new Party();
 		updated.setPartyName("New");
 		updated.setPartyStatus("Active");
-		updated.setPartyLogo("new.png");
+		
 
 		when(partyRepository.findById(1L)).thenReturn(Optional.of(existing));
 		when(partyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -108,7 +108,6 @@ class PartyServiceImplTest {
 
 		assertEquals("New", result.getPartyName());
 		assertEquals("Active", result.getPartyStatus());
-		assertEquals("new.png", result.getPartyLogo());
 	}
 
 	@Test
