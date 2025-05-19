@@ -9,7 +9,7 @@ async function displayElectionResults() {
 
   // Load elections
   try {
-    const elections = await api.get("elections/status?status=true");
+    const elections = await api.get("elections/by-status?status=true");
 	console.log(elections)
     electionDropdown.innerHTML =
       `<option disabled selected>Select Election</option>` +

@@ -18,7 +18,7 @@ async function displayVoteCards() {
 
   // 1️⃣ Load elections
   try {
-    const elections = await api.get("elections/status?status=true");
+    const elections = await api.get("elections/by-status?status=true");
     electionDd.innerHTML =
       `<option disabled selected>Select Election</option>` +
       elections.map(
