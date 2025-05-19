@@ -9,11 +9,6 @@ public class VoteRequestDto {
 	@NotNull(message = "Election is required")
 	private Long electionId;
 
-	
-	public VoteRequestDto() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public VoteRequestDto(@NotNull(message = "Candidate is required") Long candidateId,
 			@NotNull(message = "Election is required") Long electionId) {
 		super();
