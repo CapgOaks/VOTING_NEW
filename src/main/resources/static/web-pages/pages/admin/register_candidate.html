@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Manage Candidates</h2>
+
+  <form id="candidateForm">
+    <input type="hidden" id="editMode" value="false" />
+
+    <div class="mb-3">
+      <label for="userSelect" class="form-label">Select User</label>
+      <select id="userSelect" class="form-select" required></select>
+    </div>
+
+    <div class="mb-3">
+      <label for="partySelect" class="form-label">Select Party</label>
+      <select id="partySelect" class="form-select" required></select>
+    </div>
+
+    <div class="mb-3">
+      <label for="electionSelect" class="form-label">Select Election</label>
+      <select id="electionSelect" class="form-select" required></select>
+    </div>
+
+    <div class="mb-3">
+      <label for="manifestoInput" class="form-label">Manifesto (optional)</label>
+      <textarea id="manifestoInput" class="form-control" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submitBtn">Add Candidate</button>
+  </form>
+
+  <hr class="my-4" />
+
+  <h4>All Candidates</h4>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Party</th>
+        <th>Election</th>
+        <th>Manifesto</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="candidateTableBody"></tbody>
+  </table>
+</div>

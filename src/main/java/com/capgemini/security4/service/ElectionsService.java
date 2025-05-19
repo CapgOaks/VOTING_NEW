@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.capgemini.security4.entity.Elections;
 
+
+import com.capgemini.security4.dto.VotersCountDto;
+
 public interface ElectionsService {
 	Elections createElection(Elections election);
 	Elections getElectionById(Long id);
@@ -12,6 +15,8 @@ public interface ElectionsService {
 	void deleteElection(Long id);
 	List<Elections> getElectionsByStatus(Boolean status);
 
-	
+	List<Elections> getUpcomingElections();
+
+	List<VotersCountDto> getVotersCountPerElection();
 }
 

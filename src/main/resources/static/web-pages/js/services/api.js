@@ -11,7 +11,7 @@ import { getToken } from '../utils/jwtUtils.js';
  * @param {object} [data]
  */
 async function apiRequest(method, endpoint, data) {
-	console.log('api service called')
+	// console.log('api service called')
     const url = `${config.API_BASE_URL}/${endpoint}`;
     const headers = { 'Content-Type': 'application/json' };
     const token = getToken();
@@ -27,10 +27,10 @@ async function apiRequest(method, endpoint, data) {
     return response.json();
 }
 
-// /**
-//  * usage: api.post('auth/login', { username, password });
-//  * @param {string} endpoint
-//  */
+/**
+ * usage: api.post('auth/login', { username, password });
+ * @param {string} endpoint
+ */
 export const api = {
     get: (endpoint) => apiRequest('GET', endpoint),
     post: (endpoint, data) => apiRequest('POST', endpoint, data),

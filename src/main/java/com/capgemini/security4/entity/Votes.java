@@ -21,17 +21,17 @@ public class Votes {
 
 	@NotNull(message = "User is required")
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false, referencedColumnName = "user_id", insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", nullable = false, referencedColumnName = "user_id", updatable = false)
 	private Users user;
 
 	@NotNull(message = "Candidate is required")
 	@ManyToOne
-	@JoinColumn(name = "candidate_id", nullable = false, referencedColumnName = "candidate_id", insertable = false, updatable = false)
+	@JoinColumn(name = "candidate_id", nullable = false, referencedColumnName = "candidate_id", updatable = false)
 	private Candidates candidate;
 
 	@NotNull(message = "Election is required")
 	@ManyToOne
-	@JoinColumn(name = "election_id", nullable = false, referencedColumnName = "election_id", insertable = false, updatable = false)
+	@JoinColumn(name = "election_id", nullable = false, referencedColumnName = "election_id", updatable = false)
 	private Elections election;
 
 	@Column(nullable = false)

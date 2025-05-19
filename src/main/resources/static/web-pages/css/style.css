@@ -29,3 +29,30 @@ body {
   background-color: #495057;
   border-radius: 5px;
 }
+
+/* Card container */
+.card-custom {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.card-custom:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo styling */
+.logo-circle {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Make the vote button full-width */
+.vote-btn {
+  width: 100%;
+}
