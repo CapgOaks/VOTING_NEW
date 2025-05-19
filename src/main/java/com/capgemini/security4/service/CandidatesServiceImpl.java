@@ -124,12 +124,11 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 	@Override
 	public List<CandidateDto> getCandidatesByElectionId(Long electionId) {
-		// TODO Auto-generated method stub
+		
 		return candidatesRepo.findCandidateDtosByElectionId(electionId);
 	}
 	@Override
 	public List<RunningCandidateDto> getRunningCandidates() {
-		// TODO Auto-generated method stub
 		return candidatesRepo.findRunningCandidates("active");
 	}
 }

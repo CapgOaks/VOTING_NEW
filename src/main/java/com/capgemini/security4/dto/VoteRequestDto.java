@@ -9,11 +9,6 @@ public class VoteRequestDto {
 	@NotNull(message = "Election is required")
 	private Long electionId;
 
-	// no userId – it comes from SecurityUtils
-	public VoteRequestDto() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public VoteRequestDto(@NotNull(message = "Candidate is required") Long candidateId,
 			@NotNull(message = "Election is required") Long electionId) {
 		super();

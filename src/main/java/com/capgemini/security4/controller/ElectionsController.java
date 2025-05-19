@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.security4.entity.Elections;
 import com.capgemini.security4.service.ElectionsService;
+import com.capgemini.security4.dto.VotersCountDto;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +65,14 @@ public class ElectionsController {
 		List<Elections> elections = electionsService.getUpcomingElections();
 		log.info("Found {} upcoming elections", elections.size());
 		return ResponseEntity.status(HttpStatus.OK).body(elections);
+	}
+
+	@GetMapping("/voters-count")
+	public ResponseEntity<List<VotersCountDto>> getVotersCountPerElection() {
+		log.info("Fetching voters count per election");
+		List<VotersCountDto> votersCount = electionsService.getVotersCountPerElection();
+		log.info("Found voters count data for {} elections", votersCount.size());
+		return ResponseEntity.status(HttpStatus.OK).body(votersCount);
 	}
 
 	@PostMapping
