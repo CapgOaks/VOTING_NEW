@@ -43,4 +43,20 @@ public interface VotesRepository extends JpaRepository<Votes, Long> {
 	
 
 
+	interface VotersCountProjection {
+		Long getElectionId();
+		String getElectionName();
+		Long getVotersCount();
+	}
+
+	@Query(value = """
+			SELECT e.election_id AS electionId,
+			       e.title AS electionName,
+			       COUNT(v.vote_id) AS votersCount
+			  FROM elections e
+			  LEFT JOIN votes v ON e.election_id = v.election_id
+			 GROUP BY e.election_id, e.title
+			""", nativeQuery = true)
+	java.util.List<VotersCountProjection> findVotersCountPerElection();
+
 }
