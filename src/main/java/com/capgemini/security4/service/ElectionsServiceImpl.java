@@ -1,7 +1,7 @@
 package com.capgemini.security4.service;
 
 import com.capgemini.security4.entity.Elections;
-
+import com.capgemini.security4.exception.ElectionAlreadyExistException;
 import com.capgemini.security4.exception.ElectionNotFoundException;
 import com.capgemini.security4.repository.ElectionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,12 @@ public class ElectionsServiceImpl implements ElectionsService {
         this.votesRepository = votesRepository;
     }
 
+
     @Override
     public Elections createElection(Elections election) {
+    	if(electionsRepository.existsByTitle(election.getTitle())) {
+    		throw new ElectionAlreadyExistException("Election already exist with id: " + election.getTitle());
+    	}
         return electionsRepository.save(election);
     }
 
@@ -53,14 +57,7 @@ public class ElectionsServiceImpl implements ElectionsService {
         }).orElseThrow(() -> new ElectionNotFoundException("Election not Found with id: " + id));
     }
 
-    @Override
-    public void deleteElection(Long id) {
-        if (!electionsRepository.existsById(id)) {
-            throw new ElectionNotFoundException("Election not Found with id:" + id);
-        }
-        electionsRepository.deleteById(id);
-    }
-
+   
     @Override
     public List<Elections> getElectionsByStatus(Boolean status) {
         return electionsRepository.findByElectionStatus(status);
@@ -81,4 +78,9 @@ public class ElectionsServiceImpl implements ElectionsService {
                 ))
                 .collect(Collectors.toList());
     }
+
+	@Override
+	public boolean existsByTitle(String title) {
+		return  electionsRepository.existsByTitle(title);
+	}
 }

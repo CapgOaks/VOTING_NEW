@@ -13,6 +13,8 @@ public interface ElectionsRepository extends JpaRepository<Elections, Long> {
     @Query("SELECT e FROM Elections e WHERE e.startDate > CURRENT_TIMESTAMP")
     List<Elections> findUpcomingElections();
 
+    boolean existsByTitle(String title);
+
 
 	List<Elections> findByElectionStatus(Boolean status);
 

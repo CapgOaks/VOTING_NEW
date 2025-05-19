@@ -131,14 +131,7 @@ class ElectionsControllerTest {
                 .andExpect(jsonPath("$.title").value("Election 1"));
     }
 
-    @Test
-    @DisplayName("DELETE /api/elections/{id} - should delete election")
-    void shouldDeleteElection() throws Exception {
-        doNothing().when(electionsService).deleteElection(1L);
-
-        mockMvc.perform(delete("/api/elections/1"))
-                .andExpect(status().isNoContent());
-    }
+   
 
     @Test
     @DisplayName("GET /api/elections/status - should return filtered elections")
