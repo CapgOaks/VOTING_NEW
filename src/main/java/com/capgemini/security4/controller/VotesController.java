@@ -2,6 +2,7 @@ package com.capgemini.security4.controller;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,5 +102,13 @@ public class VotesController {
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
+	
+	@GetMapping("/election/{electionId}")
+	public ResponseEntity<List<Map<String, Object>>> getResultsByElection(@PathVariable Long electionId) {
+	    log.info("Fetching vote results for election ID: {}", electionId);
+	    List<Map<String, Object>> results = votesService.getElectionResults(electionId);
+	    return ResponseEntity.ok(results);
+	}
+
 
 }
