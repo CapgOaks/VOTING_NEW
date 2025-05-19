@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-
-// admin_profile.js
-=======
->>>>>>> Stashed changes
 import { getStoredPayload } from '../utils/jwtUtils.js';
 
 export function init() {
@@ -20,12 +15,4 @@ export function init() {
     document.getElementById('adminEmail').textContent = adminData.email;
     document.getElementById('adminName').textContent = adminData.username;
     document.getElementById('adminRole').textContent = adminData.role;
-<<<<<<< Updated upstream
-
-    document.getElementById('editProfileBtn').addEventListener('click', () => {
-        alert('Edit Profile clicked');
-    });
-
-=======
->>>>>>> Stashed changes
 }
