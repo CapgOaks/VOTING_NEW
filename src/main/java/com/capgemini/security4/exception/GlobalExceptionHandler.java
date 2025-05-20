@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 
 	@ExceptionHandler(UserAlreadyExistsException.class)
 	public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {

@@ -29,7 +29,7 @@ public class AuthController {
 
 	private final AuthenticationManager authenticationManager;
 	private final UserServiceImpl userService;
-	private final PasswordEncoder passwordEncoder;
+	
 	private final JwtUtils jwtService;
 
 	@Autowired
@@ -37,15 +37,12 @@ public class AuthController {
 			PasswordEncoder passwordEncoder, JwtUtils jwtService) {
 		this.userService = userService;
 		this.authenticationManager = customAuthenticationManager;
-		this.passwordEncoder = passwordEncoder;
+		;
 		this.jwtService = jwtService;
 	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<ResponseToken> authenticateUser(@RequestBody @Valid LoginDto loginDto) {
-		log.info("Attempting authentication for user: {}", loginDto.getUserName());
-		log.info("Password received: {}", loginDto.getPassword());
-
 		try {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword()));
