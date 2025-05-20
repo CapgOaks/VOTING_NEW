@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import com.capgemini.security4.dto.VotersCountDto;
 import com.capgemini.security4.repository.VotesRepository;
@@ -76,7 +76,7 @@ public class ElectionsServiceImpl implements ElectionsService {
                         projection.getElectionName(),
                         projection.getVotersCount()
                 ))
-                .collect(Collectors.toList());
+                .toList(); 
     }
 
 	@Override

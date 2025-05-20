@@ -1,175 +1,161 @@
 package com.capgemini.security4;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.capgemini.security4.entity.*;
+import com.capgemini.security4.entity.Candidates;
+import com.capgemini.security4.entity.Party;
+import com.capgemini.security4.entity.Users;
+import com.capgemini.security4.entity.Votes;
 import com.capgemini.security4.repository.VotesRepository;
 import com.capgemini.security4.service.VotesServiceImpl;
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
+import org.mockito.*;
+
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.*;
 
-@ExtendWith(MockitoExtension.class)
 class VotesServiceImplTest {
 
-    @Mock
-    private VotesRepository votesRepository;
+	@Mock
+	private VotesRepository votesRepository;
 
-    @InjectMocks
-    private VotesServiceImpl votesService;
+	@InjectMocks
+	private VotesServiceImpl votesService;
 
-    private Users testUser;
-    private Candidates testCandidate;
-    private Elections testElection;
-    private Votes testVote;
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @BeforeEach
-    void setUp() {
-        testUser = new Users();
-        testUser.setUserId(1L);
-        
-        testCandidate = new Candidates();
-        testCandidate.setCandidateId(1L);
-        
-        testElection = new Elections();
-        testElection.setElectionId(1L);
-        
-        testVote = new Votes();
-        testVote.setUser(testUser);
-        testVote.setCandidate(testCandidate);
-        testVote.setElection(testElection);
-    }
+	@Test
+	void testHasUserVoted_True() {
+		when(votesRepository.existsByUser_UserId(1L)).thenReturn(true);
+		assertTrue(votesService.hasUserVoted(1L));
+	}
 
-    @Test
-    @DisplayName("hasUserVoted - should return true when user has voted")
-    void hasUserVoted_ShouldReturnTrue_WhenUserHasVoted() {
-        // Arrange
-        when(votesRepository.existsByUser_UserId(1L)).thenReturn(true);
+	@Test
+	void testHasUserVoted_False() {
+		when(votesRepository.existsByUser_UserId(2L)).thenReturn(false);
+		assertFalse(votesService.hasUserVoted(2L));
+	}
 
-        // Act
-        boolean result = votesService.hasUserVoted(1L);
+	@Test
+	void testCastVote_Success() {
+		Users user = new Users();
+		user.setUserId(1L);
+		Candidates candidate = new Candidates();
+		candidate.setCandidateId(2L);
+		Votes vote = new Votes();
+		vote.setUser(user);
+		vote.setCandidate(candidate);
+		vote.setElection(new com.capgemini.security4.entity.Elections());
 
-        // Assert
-        assertTrue(result);
-        verify(votesRepository).existsByUser_UserId(1L);
-    }
+		when(votesRepository.existsByUser_UserId(1L)).thenReturn(false);
+		when(votesRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-    @Test
-    @DisplayName("hasUserVoted - should return false when user hasn't voted")
-    void hasUserVoted_ShouldReturnFalse_WhenUserHasNotVoted() {
-        // Arrange
-        when(votesRepository.existsByUser_UserId(1L)).thenReturn(false);
+		Votes saved = votesService.castVote(vote);
+		assertNotNull(saved.getTimeStamp());
+	}
 
-        // Act
-        boolean result = votesService.hasUserVoted(1L);
+	@Test
+	void testCastVote_MissingUser() {
+		Votes vote = new Votes();
+		vote.setCandidate(new Candidates());
+		vote.setElection(new com.capgemini.security4.entity.Elections());
+		ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> votesService.castVote(vote));
+		assertEquals("400 BAD_REQUEST \"User, candidate, and election must be specified\"", ex.getMessage());
+	}
 
-        // Assert
-        assertFalse(result);
-        verify(votesRepository).existsByUser_UserId(1L);
-    }
+	@Test
+	void testCastVote_MissingCandidate() {
+		Votes vote = new Votes();
+		vote.setUser(new Users());
+		vote.setElection(new com.capgemini.security4.entity.Elections());
+		ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> votesService.castVote(vote));
+		assertEquals("400 BAD_REQUEST \"User, candidate, and election must be specified\"", ex.getMessage());
+	}
 
-    @Test
-    @DisplayName("castVote - should successfully cast valid vote")
-    void castVote_ShouldSaveVote_WhenValid() {
-        // Arrange
-        when(votesRepository.existsByUser_UserId(1L)).thenReturn(false);
-        when(votesRepository.save(testVote)).thenReturn(testVote);
+	@Test
+	void testCastVote_MissingElection() {
+		Votes vote = new Votes();
+		vote.setUser(new Users());
+		vote.setCandidate(new Candidates());
+		ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> votesService.castVote(vote));
+		assertEquals("400 BAD_REQUEST \"User, candidate, and election must be specified\"", ex.getMessage());
+	}
 
-        // Act
-        Votes result = votesService.castVote(testVote);
+	@Test
+	void testCastVote_UserAlreadyVoted() {
+		Users user = new Users();
+		user.setUserId(1L);
+		Candidates candidate = new Candidates();
+		Votes vote = new Votes();
+		vote.setUser(user);
+		vote.setCandidate(candidate);
+		vote.setElection(new com.capgemini.security4.entity.Elections());
 
-        // Assert
-        assertNotNull(result);
-        assertNotNull(result.getTimeStamp());
-        verify(votesRepository).save(testVote);
-    }
+		when(votesRepository.existsByUser_UserId(1L)).thenReturn(true);
 
-    @Test
-    @DisplayName("castVote - should throw BAD_REQUEST when missing user")
-    void castVote_ShouldThrowBadRequest_WhenMissingUser() {
-        // Arrange
-        testVote.setUser(null);
+		ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> votesService.castVote(vote));
+		assertEquals("409 CONFLICT \"User has already voted\"", ex.getMessage());
+	}
 
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-            () -> votesService.castVote(testVote));
-        
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("User, candidate, and election must be specified", exception.getReason());
-        verify(votesRepository, never()).save(any());
-    }
+	@Test
+	void testGetElectionResults() {
+		// Mock candidate, user, and party
+		Users user = new Users();
+		user.setUserName("testuser");
+		Party party = new Party();
+		party.setPartyName("testparty");
+		Candidates candidate = new Candidates();
+		candidate.setUser(user);
+		candidate.setParty(party);
 
-    @Test
-    @DisplayName("castVote - should throw BAD_REQUEST when missing candidate")
-    void castVote_ShouldThrowBadRequest_WhenMissingCandidate() {
-        // Arrange
-        testVote.setCandidate(null);
+		// Mock repository return: List<Object[]>
+		Object[] row = new Object[] { candidate, 10L };
+		List<Object[]> repoResult = new ArrayList<>();
+		repoResult.add(row);
 
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-            () -> votesService.castVote(testVote));
-        
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("User, candidate, and election must be specified", exception.getReason());
-        verify(votesRepository, never()).save(any());
-    }
+		when(votesRepository.countVotesByCandidateInElection(1L)).thenReturn(repoResult);
+		when(votesRepository.countTotalVotesInElection(1L)).thenReturn(10L);
 
-    @Test
-    @DisplayName("castVote - should throw BAD_REQUEST when missing election")
-    void castVote_ShouldThrowBadRequest_WhenMissingElection() {
-        // Arrange
-        testVote.setElection(null);
+		List<Map<String, Object>> results = votesService.getElectionResults(1L);
 
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-            () -> votesService.castVote(testVote));
-        
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals("User, candidate, and election must be specified", exception.getReason());
-        verify(votesRepository, never()).save(any());
-    }
+		assertEquals(1, results.size());
+		assertEquals("testuser", results.get(0).get("userName"));
+		assertEquals("testparty", results.get(0).get("partyName"));
+		assertEquals(10L, results.get(0).get("voteCount"));
+		assertEquals(100.0, results.get(0).get("percentage"));
+	}
 
-    @Test
-    @DisplayName("castVote - should throw CONFLICT when user already voted")
-    void castVote_ShouldThrowConflict_WhenUserAlreadyVoted() {
-        // Arrange
-        when(votesRepository.existsByUser_UserId(1L)).thenReturn(true);
+	@Test
+	void testGetElectionResults_ZeroVotes() {
+		// Setup candidate, user, and party
+		Users user = new Users();
+		user.setUserName("testuser");
+		Party party = new Party();
+		party.setPartyName("testparty");
+		Candidates candidate = new Candidates();
+		candidate.setUser(user);
+		candidate.setParty(party);
 
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-            () -> votesService.castVote(testVote));
-        
-        assertEquals(HttpStatus.CONFLICT, exception.getStatusCode());
-        assertEquals("User has already voted", exception.getReason());
-        verify(votesRepository, never()).save(any());
-    }
+		// Mock repository return: List<Object[]>
+		Object[] row = new Object[] { candidate, 0L };
+		List<Object[]> repoResult = new ArrayList<>();
+		repoResult.add(row);
 
-    @Test
-    @DisplayName("castVote - should set timestamp before saving")
-    void castVote_ShouldSetTimestamp_BeforeSaving() {
-        // Arrange
-        when(votesRepository.existsByUser_UserId(1L)).thenReturn(false);
-        when(votesRepository.save(testVote)).thenAnswer(invocation -> {
-            Votes vote = invocation.getArgument(0);
-            assertNotNull(vote.getTimeStamp());
-            return vote;
-        });
+		when(votesRepository.countVotesByCandidateInElection(1L)).thenReturn(repoResult);
+		when(votesRepository.countTotalVotesInElection(1L)).thenReturn(0L);
 
-        // Act
-        Votes result = votesService.castVote(testVote);
+		List<Map<String, Object>> results = votesService.getElectionResults(1L);
 
-        // Assert
-        assertNotNull(result);
-        verify(votesRepository).save(testVote);
-    }
+		assertEquals(1, results.size());
+		assertEquals("testuser", results.get(0).get("userName"));
+		assertEquals("testparty", results.get(0).get("partyName"));
+		assertEquals(0L, results.get(0).get("voteCount"));
+		assertEquals(0.0, results.get(0).get("percentage"));
+	}
 }

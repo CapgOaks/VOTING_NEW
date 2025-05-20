@@ -8,7 +8,7 @@ public class CandidateDto {
 	private String partyLogo;
 
 	public CandidateDto() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public CandidateDto(Long candidateId, String candidateName, String manifesto, String partyName, String partyLogo) {
